@@ -1,0 +1,8 @@
+{
+	"packageManager": "npm",
+	"singleQuote": true,
+	"printWidth": 150,
+	"tabWidth": 2,
+	"useTabs": false,
+	"endOfLine": "auto"
+}

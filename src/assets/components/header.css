@@ -1,23 +1,12 @@
-.prod-mode {
-  #header {
-    @apply flex max-mobile-large:pb-0 max-mobile-large:flex-col-reverse;
-  }
-}
-
 header {
+  @apply pb-20 h-20;
+
   #header {
-    @apply max-mobile-large:py-0 max-mobile-large:flex-col-reverse;
+    background-color: rgb(0 3 47 / 1);
+    @apply fixed z-100 flex items-center h-20;
 
-    .bs-title {
-      @apply pl-[50px] max-mobile-large:pl-0 max-mobile-large:text-center max-mobile-large:mt-[-5px];
-
-      h1 {
-        @apply text-[24px] font-semibold leading-[18px] pt-[40px] m-0 max-mobile-large:font-medium max-mobile-large:leading-[29px] max-mobile-large:pt-0 max-mobile-large:mb-[10px];
-      }
+    img {
+      @apply h-15;
     }
   }
-}
-
-header {
-  background-color: rgb(0 3 47 / 1);
 }

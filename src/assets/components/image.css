@@ -1,5 +1,5 @@
 /* component image  */
-.image {
+.image:not(.image-default-size) {
   img {
     @apply w-full h-auto;
   }

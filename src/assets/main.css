@@ -30,6 +30,11 @@
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{w,min-w,max-w,h,min-h,max-h}-[{0..2000..10}px]");
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{w,min-w,max-w,h,min-h,max-h}-{full,auto,screen,fit,min,max,1/2,1/3,2/3,1/4,3/4}");
 
+/* heights: spacing scale h-0 ... h-64 (4px steps), viewport units */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{h,min-h,max-h}-{0..64}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{h,min-h,max-h}-{svh,lvh,dvh,px,none}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{h,min-h,max-h}-[{10..100..10}vh]");
+
 /* spacing scale: p-0 ... p-50 (4px steps) and arbitrary px: p-[0px] ... p-[300px] */
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{p,px,py,pt,pr,pb,pl,m,mx,my,mt,mr,mb,ml,gap,gap-x,gap-y}-{0..64}");
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{p,px,py,pt,pr,pb,pl,m,mx,my,mt,mr,mb,ml,gap}-[{0..300..5}px]");

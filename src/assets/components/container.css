@@ -4,22 +4,25 @@
   @apply w-full;
 }
 
-.component {
-  @apply relative py-0 px-[8px] max-desktop:p-0;
+/* In @layer components, so Tailwind utilities (px-*, py-*, p-*) set on the */
+/* component always override these defaults - no :not() needed for that.   */
+@layer components {
+  .component {
+    @apply relative py-0 px-[8px] max-desktop:p-0;
+  }
+
+  .component.container-default {
+    @apply px-0;
+  }
 }
 
-/* container component: no horizontal gutters, so the background spans edge to edge
-.component.container-default {
-  @apply px-0;
-
+/* CSS can't match .px-* with a wildcard, so match on the class attribute: */
+/* "px-..." first class, " px-..." any other class, ":px-..." with a breakpoint (md:px-10). */
+.component.container-default:not([class^='px-'], [class*=' px-'], [class*=':px-'], [class^='p-'], [class*=' p-'], [class*=':p-']) {
   > .component-content > .row {
     @apply mx-0;
-
-    > * {
-      @apply px-0;
-    }
   }
-} */
+}
 
 .container {
   @apply p-0;

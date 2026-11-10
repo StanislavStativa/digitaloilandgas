@@ -15,10 +15,13 @@ import * as PartialDesignDynamicPlaceholder from 'src/components/partial-design-
 import * as PageContent from 'src/components/page-content/PageContent';
 import * as Navigation from 'src/components/navigation/Navigation';
 import * as LinkList from 'src/components/link-list/LinkList';
-import * as IntroSection from 'src/components/intro section/IntroSection';
+import * as IntroSection from 'src/components/intro-section/IntroSection';
+import * as ImageMarquee from 'src/components/image-marquee/ImageMarquee';
 import * as Image from 'src/components/image/Image';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as Container from 'src/components/container/Container';
+import * as CountUp from 'src/components/company-statistics/CountUp';
+import * as CompanyStatistics from 'src/components/company-statistics/CompanyStatistics';
 import * as ColumnSplitter from 'src/components/column-splitter/ColumnSplitter';
 
 export const componentMap = new Map<string, NextjsContentSdkComponent>([
@@ -35,9 +38,12 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['Navigation', { ...Navigation, componentType: 'client' }],
   ['LinkList', { ...LinkList }],
   ['IntroSection', { ...IntroSection }],
+  ['ImageMarquee', { ...ImageMarquee }],
   ['Image', { ...Image }],
   ['ContentBlock', { ...ContentBlock, componentType: 'client' }],
   ['Container', { ...Container }],
+  ['CountUp', { ...CountUp, componentType: 'client' }],
+  ['CompanyStatistics', { ...CompanyStatistics }],
   ['ColumnSplitter', { ...ColumnSplitter }],
 ]);
 

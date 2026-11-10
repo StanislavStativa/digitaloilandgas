@@ -1,0 +1,52 @@
+/* component image-marquee */
+@keyframes image-marquee-scroll {
+  to {
+    transform: translateX(calc(-50% - var(--image-marquee-gap, 1rem) / 2));
+  }
+}
+
+.image-marquee {
+  --animation-direction: normal;
+
+  @apply overflow-hidden;
+
+  .image-marquee__track {
+    @apply flex flex-nowrap items-center w-max;
+    gap: var(--image-marquee-gap, 1rem);
+    /* --animation-duration is computed server-side (distance / speed); 40s is the fallback */
+    animation: image-marquee-scroll var(--animation-duration, 40s) var(--animation-direction) linear infinite;
+  }
+
+  .image-marquee__item {
+    @apply relative shrink-0;
+
+    img {
+      @apply block h-full w-auto max-w-none object-cover;
+    }
+  }
+
+  /* pause when hovering the parent */
+  &:hover .image-marquee__track {
+    animation-play-state: paused;
+  }
+
+  /* "scroll-right" in Styles reverses the direction; "scroll-left" or none keeps it */
+  .scroll-right > & {
+    --animation-direction: reverse;
+  }
+
+  /* editing mode: no animation, allow manual scroll */
+  .is-editing > & {
+    @apply overflow-x-auto;
+
+    .image-marquee__track {
+      animation: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-marquee__track {
+      animation-play-state: paused;
+    }
+  }
+}

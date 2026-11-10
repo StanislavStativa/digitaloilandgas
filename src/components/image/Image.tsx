@@ -26,6 +26,7 @@ export const Banner: React.FC<ImageProps> = ({ params, fields }) => {
       style: { objectFit: 'cover', width: '100%', height: '100%' },
     },
   };
+
   const altText = typeof baseImageField?.value?.alt === 'string' ? baseImageField.value.alt : 'Hero banner';
 
   // Use pixel caps per breakpoint so the browser picks the next-lowest srcset width

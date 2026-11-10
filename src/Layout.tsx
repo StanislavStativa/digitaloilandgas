@@ -1,22 +1,14 @@
-import React, { JSX } from "react";
-import {
-  Field,
-  ImageField,
-  Page,
-  PageMetadataFields,
-} from "@sitecore-content-sdk/nextjs";
-import Scripts from "src/Scripts";
-import SitecoreStyles from "components/content-sdk/SitecoreStyles";
-import { DesignLibraryApp } from "@sitecore-content-sdk/nextjs";
-import { AppPlaceholder } from "@sitecore-content-sdk/nextjs";
-import componentMap from ".sitecore/component-map";
-import {
-  generateWebSiteSchema,
-  generateOrganizationSchema,
-} from "src/lib/structured-data/schema";
-import StructuredData from "src/components/structured-data/StructuredData";
-import type { JsonLdValue } from "src/lib/structured-data/jsonld";
-import { getBaseUrl } from "src/lib/utils";
+import { JSX } from 'react';
+import { Field, ImageField, Page, PageMetadataFields } from '@sitecore-content-sdk/nextjs';
+import Scripts from 'src/Scripts';
+import SitecoreStyles from 'components/content-sdk/SitecoreStyles';
+import { DesignLibraryApp } from '@sitecore-content-sdk/nextjs';
+import { AppPlaceholder } from '@sitecore-content-sdk/nextjs';
+import componentMap from '.sitecore/component-map';
+import { generateWebSiteSchema, generateOrganizationSchema } from 'src/lib/structured-data/schema';
+import StructuredData from 'src/components/structured-data/StructuredData';
+import type { JsonLdValue } from 'src/lib/structured-data/jsonld';
+import { getBaseUrl } from 'src/lib/utils';
 
 interface LayoutProps {
   page: Page;
@@ -40,19 +32,19 @@ export interface RouteFields extends PageMetadataFields {
 const Layout = ({ page, baseUrl: baseUrlProp }: LayoutProps): JSX.Element => {
   const { layout, mode } = page;
   const { route } = layout.sitecore;
-  const mainClassPageEditing = mode.isEditing ? "editing-mode" : "prod-mode";
+  const mainClassPageEditing = mode.isEditing ? 'editing-mode' : 'prod-mode';
   // Use request-derived baseUrl when provided so JSON-LD URLs match actual port/host
   const baseUrl = baseUrlProp ?? getBaseUrl();
   const websiteSchema = generateWebSiteSchema(
-    "Skate Park",
+    'Digital Oil & Gas Solutions',
     baseUrl,
-    "Skate Park demo site showcasing component examples"
+    'Discover innovative digital solutions that optimize oil & gas operations and drive industry transformation. Partner with us for smarter, sustainable solutions.',
   );
   const organizationSchema = generateOrganizationSchema(
-    "Skate Park",
+    'Digital Oil & Gas Solutions',
     baseUrl,
     undefined,
-    "Skate Park demo site showcasing component examples"
+    'Discover innovative digital solutions that optimize oil & gas operations and drive industry transformation. Partner with us for smarter, sustainable solutions.',
   );
 
   return (
@@ -60,10 +52,7 @@ const Layout = ({ page, baseUrl: baseUrlProp }: LayoutProps): JSX.Element => {
       <Scripts />
       <SitecoreStyles layoutData={layout} />
       <StructuredData id="website-schema" data={websiteSchema as JsonLdValue} />
-      <StructuredData
-        id="organization-schema"
-        data={organizationSchema as JsonLdValue}
-      />
+      <StructuredData id="organization-schema" data={organizationSchema as JsonLdValue} />
       {/* root placeholder for the app, which we add components to using route data */}
       <div className={mainClassPageEditing}>
         {mode.isDesignLibrary ? (
@@ -72,46 +61,19 @@ const Layout = ({ page, baseUrl: baseUrlProp }: LayoutProps): JSX.Element => {
               page={page}
               rendering={route}
               componentMap={componentMap}
-              loadServerImportMap={() => import(".sitecore/import-map.server")}
+              loadServerImportMap={() => import('.sitecore/import-map.server')}
             />
           )
         ) : (
           <>
             <header>
-              <div id="header">
-                {route && (
-                  <AppPlaceholder
-                    page={page}
-                    componentMap={componentMap}
-                    name="headless-header"
-                    rendering={route}
-                  />
-                )}
-              </div>
+              <div id="header">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-header" rendering={route} />}</div>
             </header>
             <main>
-              <div id="content">
-                {route && (
-                  <AppPlaceholder
-                    page={page}
-                    componentMap={componentMap}
-                    name="headless-main"
-                    rendering={route}
-                  />
-                )}
-              </div>
+              <div id="content">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-main" rendering={route} />}</div>
             </main>
             <footer>
-              <div id="footer">
-                {route && (
-                  <AppPlaceholder
-                    page={page}
-                    componentMap={componentMap}
-                    name="headless-footer"
-                    rendering={route}
-                  />
-                )}
-              </div>
+              <div id="footer">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-footer" rendering={route} />}</div>
             </footer>
           </>
         )}

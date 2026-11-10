@@ -1,0 +1,42 @@
+/* component company-statistics */
+.company-statistics {
+  --company-statistics-highlight: #ff3b30;
+  --company-statistics-accent: #ffb020;
+
+  .company-statistics__list {
+    @apply grid grid-cols-1 md:grid-cols-2 list-none m-0 p-0;
+    gap: 2.5rem;
+  }
+
+  .company-statistics__item {
+    @apply flex flex-col items-center text-center;
+  }
+
+  .company-statistics__value {
+    @apply m-0 font-semibold leading-none text-2xl md:text-4xl lg:text-5xl;
+    color: var(--company-statistics-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* negative values (isNegative checkbox) are highlighted in red */
+  .company-statistics__value--negative {
+    color: var(--company-statistics-highlight);
+  }
+
+  .company-statistics__description {
+    @apply mt-2 mb-0 text-lg text-white;
+  }
+
+  /* hidden final value reserves the width while the visible value counts up */
+  .count-up {
+    @apply inline-grid;
+
+    > span {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .count-up__placeholder {
+    @apply invisible;
+  }
+}

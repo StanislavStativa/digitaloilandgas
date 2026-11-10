@@ -5,8 +5,7 @@
 
 /* bootstrap grid to tailwind plugin */
 @plugin 'tailwind-bootstrap-grid' {
-  container_max_widths:
-    'sm', '576px', 'md', '768px', 'lg', '992px', 'xl', '1200px', '2xl', '1400px';
+  container_max_widths: 'sm', '576px', 'md', '768px', 'lg', '992px', 'xl', '1200px', '2xl', '1400px';
 }
 
 /* preload tailwind-bootstrap-grid utility classes; */
@@ -19,3 +18,22 @@
 }
 
 @source inline("my-25");
+
+/* ------------------------------------------------------------------ */
+/* Safelist for classes set from Sitecore (rendering params/content).  */
+/* They are not in source files, so Tailwind can't detect them.        */
+/* Every pattern is generated for the base + all breakpoints.          */
+/* Extend the value lists below if you need more.                      */
+/* ------------------------------------------------------------------ */
+
+/* sizes: w-[0px] ... w-[2000px] in 10px steps, plus keywords */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{w,min-w,max-w,h,min-h,max-h}-[{0..2000..10}px]");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{w,min-w,max-w,h,min-h,max-h}-{full,auto,screen,fit,min,max,1/2,1/3,2/3,1/4,3/4}");
+
+/* spacing scale: p-0 ... p-50 (4px steps) and arbitrary px: p-[0px] ... p-[300px] */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{p,px,py,pt,pr,pb,pl,m,mx,my,mt,mr,mb,ml,gap,gap-x,gap-y}-{0..64}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{p,px,py,pt,pr,pb,pl,m,mx,my,mt,mr,mb,ml,gap}-[{0..300..5}px]");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{m,mx,my,mt,mr,mb,ml}-auto");
+
+/* layout / alignment */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{text-left,text-center,text-right,text-justify,items-start,items-center,items-end,items-stretch,justify-start,justify-center,justify-end,justify-between,justify-around,self-start,self-center,self-end,flex,inline-flex,block,inline-block,grid,hidden,flex-row,flex-col,flex-wrap,flex-1}");

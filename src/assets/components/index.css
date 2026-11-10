@@ -3,6 +3,8 @@
 @import './header.css';
 @import './promo.css';
 @import './image.css';
+@import './image-marquee.css';
+@import './company-statistics.css';
 @import './container.css';
 @import './column-splitter.css';
 @import './navigation.css';

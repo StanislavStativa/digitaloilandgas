@@ -8,6 +8,7 @@ import { Form } from '@sitecore-content-sdk/nextjs';
 // end of built-in import section
 import * as Navigation from 'src/components/navigation/Navigation';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
+import * as CountUp from 'src/components/company-statistics/CountUp';
 
 export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCClientWrapper],
@@ -15,6 +16,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['Form', Form],
   ['Navigation', { ...Navigation }],
   ['ContentBlock', { ...ContentBlock }],
+  ['CountUp', { ...CountUp }],
 ]);
 
 export default componentMap;

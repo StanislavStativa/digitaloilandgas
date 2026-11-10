@@ -1,4 +1,4 @@
-# Skate Park - Demo Site (NextJS) - nextjsstarter
+# Digitaloilandgas (NextJS) - nextjsstarter
 
 ## Table of Contents
 

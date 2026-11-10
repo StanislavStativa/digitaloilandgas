@@ -1,0 +1,13 @@
+{
+  "renderingHosts": {
+    "digitaloilandgas": {
+      "path": ".",
+      "nodeVersion": "22.11.0",
+      "packageManager": "npm",
+      "enabled": true,
+      "type": "sxa",
+      "buildCommand": "build",
+      "runCommand": "next:start"
+    }
+  }
+}

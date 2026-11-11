@@ -6,6 +6,9 @@
   a {
     @apply inline-block max-w-full;
   }
+}
+
+.image {
   span {
     @apply block italic text-font-small text-text-basic;
   }

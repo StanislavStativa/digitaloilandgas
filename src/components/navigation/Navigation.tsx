@@ -163,11 +163,20 @@ export const Default = ({ params, fields }: NavigationProps) => {
     setIsMenuOpen(forceState ?? !isMenuOpen);
   };
 
-  const navigationItems = Object.values(fields)
-    .filter(Boolean)
-    .map((item: Fields, index) => (
-      <NavigationListItem key={`${index}-${item.Id}`} fields={item} handleClick={(event) => handleToggleMenu(event, false)} relativeLevel={1} />
-    ));
+  const items = Object.values(fields).filter(Boolean) as Fields[];
+
+  const root = items.length === 1 ? items[0] : undefined;
+
+  const menuItems =
+    root && normalizePath(root.Href) === '/' && root.Children?.length ? [root, ...root.Children.map((child) => ({ ...child }))] : items;
+
+  if (root && menuItems !== items) {
+    menuItems[0] = { ...root, Children: [] };
+  }
+
+  const navigationItems = menuItems.map((item, index) => (
+    <NavigationListItem key={`${index}-${item.Id}`} fields={item} handleClick={(event) => handleToggleMenu(event, false)} relativeLevel={1} />
+  ));
 
   return (
     <div className={`component navigation ${styles} ${isMenuOpen ? 'menu-open' : ''}`} id={id}>

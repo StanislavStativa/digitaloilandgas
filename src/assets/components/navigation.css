@@ -8,7 +8,7 @@
   --nav-divider: rgb(255 255 255 / 0.3);
   --nav-header-height: 80px;
 
-  @apply bg-transparent font-lato;
+  @apply bg-transparent font-lato items-center;
 
   ul {
     @apply m-0 list-none p-0;
@@ -110,6 +110,14 @@
 
     .rel-level2.current > .navigation-title > a {
       @apply text-(color:--nav-red);
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .navigation {
+    .navigation-list {
+      column-gap: 2rem;
     }
   }
 }

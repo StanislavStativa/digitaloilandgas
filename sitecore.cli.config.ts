@@ -24,6 +24,7 @@ export default defineCliConfig({
     exclude: [
       'src/components/content-sdk/*',
       'src/components/atoms/**',
+      'src/components/icons/**',
       'src/components/ui/**',
       '**/*.props.ts',
       '**/*.props.tsx',

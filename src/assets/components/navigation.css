@@ -80,9 +80,7 @@
         }
 
         &:hover > .navigation-title,
-        &:hover > .navigation-title > a,
-        &.current > .navigation-title,
-        &.current > .navigation-title > a {
+        &:hover > .navigation-title > a {
           @apply text-(color:--nav-red);
         }
       }

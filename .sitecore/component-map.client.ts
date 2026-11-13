@@ -7,6 +7,7 @@ import { Form } from '@sitecore-content-sdk/nextjs';
 
 // end of built-in import section
 import * as NavigationMenu from 'src/components/navigation/NavigationMenu';
+import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as CountUp from 'src/components/company-statistics/CountUp';
 
@@ -15,6 +16,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['FEaaSWrapper', FEaaSClientWrapper],
   ['Form', Form],
   ['NavigationMenu', { ...NavigationMenu }],
+  ['ImageSliderCarousel', { ...ImageSliderCarousel }],
   ['ContentBlock', { ...ContentBlock }],
   ['CountUp', { ...CountUp }],
 ]);

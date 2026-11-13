@@ -367,3 +367,24 @@
 .offset-xxl-11 {
   @apply 2xl:offset-11;
 }
+
+/* order: Bootstrap names → Tailwind variants (order-first / order-last are safelisted in main.css).
+   Kept in breakpoint order so a larger breakpoint wins, e.g. "order-md-first order-lg-last". */
+.order-md-first {
+  @apply md:order-first;
+}
+.order-md-last {
+  @apply md:order-last;
+}
+.order-lg-first {
+  @apply lg:order-first;
+}
+.order-lg-last {
+  @apply lg:order-last;
+}
+.order-xl-first {
+  @apply xl:order-first;
+}
+.order-xl-last {
+  @apply xl:order-last;
+}

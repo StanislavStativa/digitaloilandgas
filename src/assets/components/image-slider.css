@@ -1,0 +1,160 @@
+/* component image-slider */
+.image-slider {
+  --image-slider-arrow-size: 44px;
+  --image-slider-arrow-gap: 34px;
+  --image-slider-arrow-inset: 12px;
+  /* Minimal space between the image and the slider's left/right edges (arrows don't depend on it) */
+  --image-slider-image-gutter: 20px;
+  --image-slider-arrow-bg: #162181;
+  --image-slider-arrow-color: #ffffff;
+  --image-slider-dot-size: 9px;
+  --image-slider-dot-hit: 26px;
+  --image-slider-dot-color: #c7c1c1;
+  --image-slider-dot-active: rgb(255 43 30 / 1);
+  --image-slider-duration: 450ms;
+
+  /* Fluid: always the parent's width, never wider */
+  @apply relative w-full max-w-full min-w-0;
+
+  .image-slider__stage {
+    @apply relative;
+  }
+
+  .image-slider__viewport {
+    @apply overflow-hidden;
+    /* horizontal swipes are ours, vertical scrolling stays with the page */
+    touch-action: pan-y;
+  }
+
+  .image-slider__track {
+    @apply flex;
+    transition: transform var(--image-slider-duration) ease;
+  }
+
+  /* All slides share the tallest slide's height; images are centered both ways,
+     so the arrows (top: 50%) line up with the active image's center. */
+  .image-slider__slide {
+    @apply relative box-border flex min-w-0 shrink-0 grow-0 basis-full flex-col items-center justify-center;
+    padding-inline: var(--image-slider-image-gutter);
+  }
+
+  /* Width comes from the image's width attribute (its natural size → no upscaling)
+     and shrinks with the container; height follows the aspect ratio. */
+  .image-slider__slide img {
+    @apply block h-auto max-w-full min-w-0;
+  }
+
+  .image-slider__arrow {
+    @apply absolute top-1/2 z-[1] flex -translate-y-1/2 cursor-pointer items-center justify-center border-0 p-0;
+    width: var(--image-slider-arrow-size);
+    height: var(--image-slider-arrow-size);
+    border-radius: 5px;
+    background-color: var(--image-slider-arrow-bg);
+    color: var(--image-slider-arrow-color);
+    opacity: 1;
+    transition: opacity 180ms ease;
+
+    svg {
+      @apply h-auto;
+      width: 30%;
+    }
+
+    &:hover:not(:disabled) {
+      opacity: 0.8;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--image-slider-arrow-bg);
+      outline-offset: 2px;
+      box-shadow: 0 0 0 2px var(--image-slider-arrow-color);
+    }
+
+    &:disabled {
+      @apply cursor-default;
+      opacity: 0.35;
+    }
+  }
+
+  .image-slider__arrow--next svg {
+    transform: scaleX(-1);
+  }
+
+  /* Placement (--image-slider-image-width is measured by ImageSliderCarousel).
+     Free space beside the image = 50% - width / 2.
+     - Enough space: outside the image, --image-slider-arrow-gap away from it.
+     - Less space: the arrow stays --image-slider-arrow-inset from the container edge, so the
+       image slides under it gradually as the container narrows...
+     - ...until the image fills the container: then it sits --image-slider-arrow-inset inside the image.
+     data-arrows="outside" | "inside" mirrors the same rule for styling hooks/tests. */
+  .image-slider__arrow--prev,
+  .image-slider__arrow--next {
+    --image-slider-arrow-offset: max(
+      var(--image-slider-arrow-inset),
+      50% - var(--image-slider-image-width, 100%) / 2 - var(--image-slider-arrow-gap) - var(--image-slider-arrow-size)
+    );
+    /* Very narrow images: shrink so both arrows still fit inside the image */
+    width: max(24px, min(var(--image-slider-arrow-size), (var(--image-slider-image-width, 100%) - 3 * var(--image-slider-arrow-inset)) / 2));
+    height: max(24px, min(var(--image-slider-arrow-size), (var(--image-slider-image-width, 100%) - 3 * var(--image-slider-arrow-inset)) / 2));
+  }
+
+  .image-slider__arrow--prev {
+    left: var(--image-slider-arrow-offset);
+  }
+
+  .image-slider__arrow--next {
+    right: var(--image-slider-arrow-offset);
+  }
+
+  /* Until the first measurement the position is a guess: don't flash it */
+  &:not([data-arrows]) .image-slider__arrow {
+    visibility: hidden;
+  }
+
+  .image-slider__dots {
+    @apply mt-1 flex flex-wrap justify-center;
+  }
+
+  .image-slider__dot {
+    @apply relative cursor-pointer rounded-full border-0 bg-transparent p-0;
+    width: var(--image-slider-dot-hit);
+    height: var(--image-slider-dot-hit);
+
+    &::before {
+      @apply absolute top-1/2 left-1/2 -translate-1/2 rounded-full content-[''];
+      width: var(--image-slider-dot-size);
+      height: var(--image-slider-dot-size);
+      background-color: var(--image-slider-dot-color);
+      transition: background-color 180ms ease;
+    }
+
+    &:hover::before {
+      background-color: color-mix(in srgb, var(--image-slider-dot-active) 55%, var(--image-slider-dot-color));
+    }
+
+    &[aria-current='true']::before {
+      background-color: var(--image-slider-dot-active);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--image-slider-arrow-bg);
+      outline-offset: -4px;
+    }
+  }
+
+  .is-empty-hint {
+    @apply mt-2 block text-center italic text-font-small text-text-basic;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-slider__track,
+    .image-slider__arrow,
+    .image-slider__dot::before {
+      transition: none;
+    }
+  }
+}
+
+/* Empty datasource hint in Pages */
+.image-slider-component > .component-content > .is-empty-hint {
+  @apply block p-4 text-center italic text-text-basic;
+}

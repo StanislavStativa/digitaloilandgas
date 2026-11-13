@@ -12,6 +12,8 @@
 /* responsive classes are in base/tailwind-bootstrap-grid */
 @source inline("col-{1..12}");
 @source inline("offset-{1..12}");
+/* order-first / order-last; the responsive order-{md,lg,xl}-{first,last} live in base/tailwind-bootstrap-grid */
+@source inline("order-{first,last}");
 
 @theme {
   --spacing-25: 100px;

@@ -27,6 +27,9 @@ export interface ImageSliderProps extends ComponentProps {
   fields?: CompatibleDatasource<ImageSliderDatasource>;
 }
 
+/** Delay between autoplay slides, ms */
+export const IMAGE_SLIDER_AUTOPLAY_INTERVAL = 5000;
+
 /** One slide passed from the server component to the client carousel */
 export interface ImageSliderSlide {
   id: string;

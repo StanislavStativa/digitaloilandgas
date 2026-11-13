@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { Default as ImageSlider } from '../../../components/image-slider/ImageSlider';
-import { AUTOPLAY_INTERVAL } from '../../../components/image-slider/ImageSliderCarousel';
+import { IMAGE_SLIDER_AUTOPLAY_INTERVAL as AUTOPLAY_INTERVAL } from '../../../components/image-slider/ImageSlider.props';
 import { makeItem, makeProps } from './ImageSlider.mockProps';
 
 jest.mock('@sitecore-content-sdk/nextjs', () => ({
-  // eslint-disable-next-line @next/next/no-img-element
   Image: ({ field, ...props }: { field?: { value?: { src?: string; alt?: string } } }) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img src={field?.value?.src} alt={field?.value?.alt ?? ''} {...props} />
   ),
 }));
@@ -42,7 +42,9 @@ describe('ImageSlider', () => {
     expect(images.map((img) => img.getAttribute('src'))).toEqual(['/slide-1.jpg', '/slide-2.jpg', '/slide-3.jpg']);
     expect(images[0]).toHaveAttribute('alt', 'Slide image 1');
     expect(images[0]).toHaveAttribute('loading', 'eager');
-    expect(images[1]).toHaveAttribute('loading', 'lazy');
+    // slide 2 is preloaded as the neighbour; the rest stay lazy
+    expect(images[1]).toHaveAttribute('loading', 'eager');
+    expect(images[2]).toHaveAttribute('loading', 'lazy');
 
     const wrapper = container.querySelector('.component') as HTMLElement;
     expect(wrapper).toHaveClass('component', 'image-slider-component', 'custom-style');
@@ -242,6 +244,75 @@ describe('ImageSlider', () => {
       act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL * 2));
       expect(activeDotIndex()).toBe(0);
     });
+
+    it('pauses while scrolled off-screen and resumes when visible again', () => {
+      let report: IntersectionObserverCallback = () => {};
+      const original = global.IntersectionObserver;
+      global.IntersectionObserver = class {
+        constructor(callback: IntersectionObserverCallback) {
+          report = callback;
+        }
+        observe() {}
+        disconnect() {}
+      } as unknown as typeof IntersectionObserver;
+      const setVisible = (isIntersecting: boolean) =>
+        act(() => report([{ isIntersecting } as IntersectionObserverEntry], {} as IntersectionObserver));
+
+      try {
+        render(<ImageSlider {...makeProps({ isAutoplay: true })} />);
+        setVisible(false);
+        act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL * 3));
+        expect(activeDotIndex()).toBe(0);
+
+        setVisible(true);
+        act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL));
+        expect(activeDotIndex()).toBe(1);
+      } finally {
+        global.IntersectionObserver = original;
+      }
+    });
+
+    it('pauses while the tab is hidden', () => {
+      const visibility = jest.spyOn(document, 'visibilityState', 'get');
+      try {
+        render(<ImageSlider {...makeProps({ isAutoplay: true })} />);
+        visibility.mockReturnValue('hidden');
+        act(() => {
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+        act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL * 3));
+        expect(activeDotIndex()).toBe(0);
+
+        visibility.mockReturnValue('visible');
+        act(() => {
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+        act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL));
+        expect(activeDotIndex()).toBe(1);
+      } finally {
+        visibility.mockRestore();
+      }
+    });
+
+    it('does not tick in a tab that was opened in the background', () => {
+      const visibility = jest.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden');
+      try {
+        render(<ImageSlider {...makeProps({ isAutoplay: true })} />);
+        act(() => jest.advanceTimersByTime(AUTOPLAY_INTERVAL * 2));
+        expect(activeDotIndex()).toBe(0);
+      } finally {
+        visibility.mockRestore();
+      }
+    });
+  });
+
+  it('preloads the neighbours of the active slide and keeps the rest lazy', () => {
+    render(<ImageSlider {...makeProps({ count: 5 })} />);
+    const loading = () => screen.getAllByRole('img', { hidden: true }).map((img) => img.getAttribute('loading'));
+
+    expect(loading()).toEqual(['eager', 'eager', 'lazy', 'lazy', 'lazy']);
+    fireEvent.click(getDots()[2]);
+    expect(loading()).toEqual(['eager', 'eager', 'eager', 'eager', 'lazy']);
   });
 
   it('keeps multiple instances independent', () => {
@@ -304,6 +375,15 @@ describe('ImageSlider', () => {
     const observers: { callback: ResizeObserverCallback; targets: Element[] }[] = [];
     const originalRO = global.ResizeObserver;
 
+    // The hook reads arrow size/gap from CSS once at mount, so they must exist before render
+    let sheet: HTMLStyleElement;
+    beforeAll(() => {
+      sheet = document.createElement('style');
+      sheet.textContent = '.image-slider { --image-slider-arrow-size: 44px; --image-slider-arrow-gap: 34px; }';
+      document.head.appendChild(sheet);
+    });
+    afterAll(() => sheet.remove());
+
     beforeEach(() => {
       observers.length = 0;
       global.ResizeObserver = class {
@@ -328,8 +408,6 @@ describe('ImageSlider', () => {
       const { container } = render(<ImageSlider {...makeProps()} />);
       const root = container.querySelector('.image-slider') as HTMLElement;
       const viewport = container.querySelector('.image-slider__viewport') as HTMLElement;
-      root.style.setProperty('--image-slider-arrow-size', '44px');
-      root.style.setProperty('--image-slider-arrow-gap', '34px');
 
       const resize = (cw: number, iw: number) => {
         Object.defineProperty(viewport, 'clientWidth', { configurable: true, value: cw });

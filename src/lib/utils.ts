@@ -26,3 +26,12 @@ export function readCheckbox(value: unknown, fallback = false): boolean {
   if (typeof value === "string") return ["1", "true"].includes(value.trim().toLowerCase());
   return value === true || value === 1;
 }
+
+/**
+ * Joins class names, skipping falsy parts and collapsing whitespace
+ * (Sitecore `styles` params often carry extra spaces).
+ * @example cn("component", isEditing && "is-editing", params.styles)
+ */
+export function cn(...classes: Array<string | false | null | undefined>): string {
+  return classes.filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+}

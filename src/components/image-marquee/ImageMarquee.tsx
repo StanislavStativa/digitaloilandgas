@@ -1,4 +1,5 @@
 import { getDatasource, getFieldValue } from 'lib/component-props';
+import { cn } from 'lib/utils';
 import { CSSProperties, FC } from 'react';
 import { Image as ContentSdkImage } from '@sitecore-content-sdk/nextjs';
 import { ImageMarqueeItem, ImageMarqueeProps } from './ImageMarquee.props';
@@ -65,7 +66,7 @@ export const Default: FC<ImageMarqueeProps> = ({ fields, params, page }) => {
   return (
     <div
       id={typeof id === 'string' ? id : undefined}
-      className={`component ${isEditing ? 'is-editing' : ''} ${styles ?? ''}`.replace(/\s+/g, ' ').trim()}
+      className={cn('component', isEditing && 'is-editing', styles)}
       style={style}
     >
       <div className="component-content image-marquee">

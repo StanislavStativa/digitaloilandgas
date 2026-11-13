@@ -1,5 +1,5 @@
 import { getDatasource, getFieldValue } from 'lib/component-props';
-import { readCheckbox } from 'lib/utils';
+import { cn, readCheckbox } from 'lib/utils';
 import { Image as ContentSdkImage } from '@sitecore-content-sdk/nextjs';
 import { FC } from 'react';
 import { ImageSliderItem, ImageSliderProps, ImageSliderSlide } from './ImageSlider.props';
@@ -34,7 +34,7 @@ export const Default: FC<ImageSliderProps> = ({ fields, params, page }) => {
   return (
     <div
       id={typeof id === 'string' ? id : undefined}
-      className={`component image-slider-component ${isEditing ? 'is-editing' : ''} ${styles ?? ''}`.replace(/\s+/g, ' ').trim()}
+      className={cn('component image-slider-component', isEditing && 'is-editing', styles)}
     >
       <div className="component-content">
         {slides.length ? (

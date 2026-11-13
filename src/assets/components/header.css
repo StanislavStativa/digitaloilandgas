@@ -6,7 +6,13 @@ header {
     @apply fixed z-100 flex items-center h-20;
 
     img {
-      @apply h-15;
+      @apply h-9;
+    }
+
+    @media (min-width: 768px) {
+      img {
+        @apply h-15;
+      }
     }
   }
 }

@@ -40,5 +40,8 @@
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{p,px,py,pt,pr,pb,pl,m,mx,my,mt,mr,mb,ml,gap}-[{0..300..5}px]");
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{m,mx,my,mt,mr,mb,ml}-auto");
 
+/* border radius: rounded, rounded-sm ... rounded-full, per side/corner (rounded-t-lg, rounded-tl-md, ...) */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}rounded{,-t,-r,-b,-l,-tl,-tr,-br,-bl}{,-none,-xs,-sm,-md,-lg,-xl,-2xl,-3xl,-4xl,-full}");
+
 /* layout / alignment */
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{text-left,text-center,text-right,text-justify,items-start,items-center,items-end,items-stretch,justify-start,justify-center,justify-end,justify-between,justify-around,self-start,self-center,self-end,flex,inline-flex,block,inline-block,grid,hidden,flex-row,flex-col,flex-wrap,flex-1}");

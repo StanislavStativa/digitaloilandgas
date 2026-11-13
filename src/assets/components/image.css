@@ -12,6 +12,14 @@
   span {
     @apply block italic text-font-small text-text-basic;
   }
+
+  /* Radius utilities (rounded-*) set from Sitecore land on the <figure>, whose grid padding
+     (col-*) keeps its corners away from the image; pass the radius down to the <img>. */
+  .component-content,
+  .component-content > a,
+  img {
+    border-radius: inherit;
+  }
 }
 
 /* components image */

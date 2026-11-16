@@ -6,6 +6,7 @@ import { BYOCServerWrapper, FEaaSServerWrapper } from '@sitecore-content-sdk/nex
 import { Form } from '@sitecore-content-sdk/nextjs';
 
 // end of built-in import section
+import * as TitledSection from 'src/components/titled-section/TitledSection';
 import * as Title from 'src/components/title/Title';
 import * as StructuredData from 'src/components/structured-data/StructuredData';
 import * as RowSplitter from 'src/components/row-splitter/RowSplitter';
@@ -22,6 +23,8 @@ import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCar
 import * as ImageSlider from 'src/components/image-slider/ImageSlider';
 import * as ImageMarquee from 'src/components/image-marquee/ImageMarquee';
 import * as Image from 'src/components/image/Image';
+import * as ChevronLeftIcon from 'src/components/icons/ChevronLeftIcon';
+import * as ChevronDownIcon from 'src/components/icons/ChevronDownIcon';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
@@ -32,6 +35,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCServerWrapper],
   ['FEaaSWrapper', FEaaSServerWrapper],
   ['Form', { ...Form, componentType: 'client' }],
+  ['TitledSection', { ...TitledSection }],
   ['Title', { ...Title }],
   ['StructuredData', { ...StructuredData }],
   ['RowSplitter', { ...RowSplitter }],
@@ -48,6 +52,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['ImageSlider', { ...ImageSlider }],
   ['ImageMarquee', { ...ImageMarquee }],
   ['Image', { ...Image }],
+  ['ChevronLeftIcon', { ...ChevronLeftIcon }],
+  ['ChevronDownIcon', { ...ChevronDownIcon }],
   ['ContentBlock', { ...ContentBlock, componentType: 'client' }],
   ['Container', { ...Container }],
   ['CountUp', { ...CountUp, componentType: 'client' }],

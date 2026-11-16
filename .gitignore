@@ -28,3 +28,6 @@
 !.sitecore/component-map.client.ts
 /coverage
 /.jest-cache
+
+# TypeScript incremental build cache
+*.tsbuildinfo

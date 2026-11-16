@@ -1,0 +1,13 @@
+/* component titled-section */
+
+.titled-section__inner {
+  @apply mx-auto w-full max-w-screen-2xl;
+}
+
+.titled-section__title {
+  @apply text-center;
+}
+
+.titled-section__content {
+  @apply mt-14;
+}

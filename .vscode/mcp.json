@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "sc-developer": {
+      "type": "http",
+      "url": "https://edge-platform.sitecorecloud.io/mcp/developer"
+    }
+  }
+}

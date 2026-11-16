@@ -16,6 +16,7 @@ import * as PageContent from 'src/components/page-content/PageContent';
 import * as NavigationMenu from 'src/components/navigation/NavigationMenu';
 import * as Navigation from 'src/components/navigation/Navigation';
 import * as LinkList from 'src/components/link-list/LinkList';
+import * as Link from 'src/components/link/Link';
 import * as IntroSection from 'src/components/intro-section/IntroSection';
 import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
 import * as ImageSlider from 'src/components/image-slider/ImageSlider';
@@ -41,6 +42,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['NavigationMenu', { ...NavigationMenu, componentType: 'client' }],
   ['Navigation', { ...Navigation }],
   ['LinkList', { ...LinkList }],
+  ['Link', { ...Link }],
   ['IntroSection', { ...IntroSection }],
   ['ImageSliderCarousel', { ...ImageSliderCarousel, componentType: 'client' }],
   ['ImageSlider', { ...ImageSlider }],

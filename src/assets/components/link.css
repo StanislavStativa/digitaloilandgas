@@ -1,0 +1,15 @@
+/* Primary button style: used by the Link component and any element with .btn-primary */
+
+.btn-primary a {
+  @apply inline-flex items-center justify-center;
+  @apply min-h-10 px-3 md:px-8;
+  @apply bg-[rgb(255_43_30)] text-white;
+  @apply border-none rounded-full;
+  @apply text-[14px] md:text-[15px] desktop:text-[16px] font-semibold uppercase no-underline;
+  @apply transition-colors duration-250 ease-[ease];
+  @apply hover:opacity-80 focus-visible:opacity-80;
+
+  span {
+    @apply whitespace-nowrap;
+  }
+}

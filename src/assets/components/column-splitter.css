@@ -4,4 +4,13 @@
   > div {
     @apply px-[5px];
   }
+
+  /* A nested .row gets the full grid gutter (-12px) but these columns only have 5px padding.
+     Below md the section padding is just 1rem, so the row spilled ~0.5px past the viewport
+     and caused a horizontal scrollbar. Match the row's margin to the column padding. */
+  @media (width < 768px) {
+    > div > .row {
+      @apply -mx-[5px];
+    }
+  }
 }

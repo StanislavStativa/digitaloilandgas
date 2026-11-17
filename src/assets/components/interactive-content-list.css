@@ -1,0 +1,223 @@
+/* component interactive-content-list */
+
+/* The component's own width picks the layout (container queries), so it adapts inside
+   column splitters, containers and resizing Pages panels without a window resize.
+   The outer background stays transparent: the dark section belongs to the parent container. */
+.interactive-content-list-component {
+  @apply @container/interactive-content-list w-full;
+}
+
+.interactive-content-list {
+  --icl-card-bg: rgb(255 255 255 / 0.34);
+  --icl-card-color: #ffffff;
+  --icl-accent: rgb(255 43 30);
+  --icl-accent-width: 0.5rem;
+  --icl-radius: 0.25rem;
+  --icl-gap: 1.375rem;
+  --icl-card-padding: 1.75rem 2rem 2rem;
+  --icl-media-min-height: 20rem;
+  /* Tablet/mobile image box: at least this ratio, taller when the card is taller */
+  --icl-media-ratio: 7 / 5;
+  --icl-duration: 250ms;
+  --icl-dot-size: 0.5625rem;
+  --icl-dot-hit: 1.625rem;
+  --icl-dot-color: #c7c1c1;
+  --icl-focus: #ffffff;
+
+  @apply relative w-full min-w-0 bg-transparent;
+}
+
+/* ---------- Desktop (default): all cards left, active image right ---------- */
+
+/* Holds the block and, in tablet/mobile, the snapshot used for the slide transition */
+.interactive-content-list__viewport {
+  --icl-viewport-pad: 0rem;
+  @apply relative;
+}
+
+/* Static copy of the previous item that slides out (filled by InteractiveContentSwitcher) */
+.interactive-content-list__ghost {
+  @apply pointer-events-none absolute inset-(--icl-viewport-pad) empty:hidden;
+
+  > .interactive-content-list__layout {
+    @apply absolute inset-0;
+  }
+}
+
+.interactive-content-list__layout {
+  @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-(--icl-gap);
+}
+
+/* Equal card heights (the tallest card's), as in the design; never clips text */
+.interactive-content-list__cards {
+  @apply grid min-w-0 auto-rows-fr gap-(--icl-gap) self-start;
+}
+
+/* The accent width is always reserved, so activating a card doesn't shift its content */
+.interactive-content-list__card {
+  @apply relative box-border min-w-0 p-(--icl-card-padding);
+  @apply rounded-(--icl-radius) border-l-(length:--icl-accent-width) border-solid border-l-transparent;
+  @apply bg-(--icl-card-bg) text-(--icl-card-color) wrap-break-word;
+  @apply transition-[border-color] duration-(--icl-duration) ease-[ease] motion-reduce:transition-none;
+
+  &.is-active {
+    @apply border-l-(color:--icl-accent);
+  }
+}
+
+/* Global h4 typography is kept; only spacing and colour are local */
+.interactive-content-list__title {
+  @apply mt-0 text-inherit;
+}
+
+/* Title button, stretched over the whole card: the card is one big target without
+   wrapping the CTA link (no nested interactive elements) */
+.interactive-content-list__select {
+  @apply m-0 cursor-pointer border-0 bg-transparent p-0 text-inherit tracking-[inherit] [font:inherit] [text-align:inherit];
+  @apply focus:outline-none;
+
+  &::after {
+    @apply absolute inset-0 rounded-(--icl-radius) content-[''];
+  }
+
+  &:focus-visible::after {
+    @apply outline-2 outline-offset-2 outline-(--icl-focus);
+  }
+}
+
+/* Description and CTA sit above the stretched button: links inside stay clickable */
+.interactive-content-list__description,
+.interactive-content-list__cta {
+  @apply relative z-[1];
+}
+
+.interactive-content-list__description {
+  @apply text-inherit;
+}
+
+.interactive-content-list__cta {
+  @apply mt-5;
+
+  a {
+    @apply inline-block text-base leading-normal font-semibold tracking-[0.02em] text-inherit uppercase;
+    @apply underline decoration-2 underline-offset-[0.5rem];
+    @apply transition-opacity duration-180 ease-[ease] motion-reduce:transition-none;
+    @apply hover:text-inherit hover:opacity-80;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--icl-focus);
+  }
+}
+
+/* Image box: images are stacked and cross-faded; object-fit crops instead of distorting */
+.interactive-content-list__media {
+  @apply relative min-h-(--icl-media-min-height) min-w-0 overflow-hidden rounded-(--icl-radius);
+}
+
+.interactive-content-list__image {
+  /* The outgoing image stays opaque under the incoming one until its fade ends: no empty frame */
+  @apply absolute inset-0 opacity-0 transition-opacity delay-(--icl-duration) duration-0 ease-linear motion-reduce:transition-none;
+
+  &.is-active {
+    @apply z-[1] opacity-100 delay-0 duration-(--icl-duration) ease-[ease];
+  }
+
+  img {
+    @apply block h-full w-full max-w-none object-cover object-center;
+  }
+
+  .is-empty-hint {
+    @apply absolute inset-x-0 bottom-1/2 translate-y-1/2 text-center text-(--icl-card-color) italic;
+  }
+}
+
+.interactive-content-list__dots {
+  @apply mt-3 hidden flex-wrap justify-center;
+}
+
+.interactive-content-list__dot {
+  @apply relative size-(--icl-dot-hit) cursor-pointer rounded-full border-0 bg-transparent p-0;
+  @apply focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-(--icl-focus);
+
+  &::before {
+    @apply absolute top-1/2 left-1/2 size-(--icl-dot-size) -translate-1/2 rounded-full bg-(--icl-dot-color) content-[''];
+    @apply transition-colors duration-180 ease-[ease] motion-reduce:transition-none;
+  }
+
+  &:hover::before {
+    @apply bg-[color-mix(in_srgb,var(--icl-accent)_55%,var(--icl-dot-color))];
+  }
+
+  &[aria-current='true']::before {
+    @apply bg-(--icl-accent);
+  }
+}
+
+/* ---------- Tablet / mobile: one card + its image side by side, dots below ---------- */
+
+@container interactive-content-list (width < 68.75rem) {
+  /* horizontal swipes switch items, vertical scrolling stays with the page */
+  .interactive-content-list {
+    --icl-gap: 2rem;
+    @apply touch-pan-y;
+  }
+
+  /* Clips the slide; the padding (cancelled by the negative margin) keeps focus outlines visible */
+  .interactive-content-list__viewport {
+    --icl-viewport-pad: 0.375rem;
+    @apply -m-(--icl-viewport-pad) overflow-hidden p-(--icl-viewport-pad);
+  }
+
+  .interactive-content-list__layout {
+    @apply grid-cols-[minmax(0,1fr)_minmax(0,1fr)];
+  }
+
+  /* Every card shares one grid cell, so the cell keeps the tallest card's height
+     and switching items never makes the section jump */
+  .interactive-content-list__cards {
+    @apply auto-rows-auto gap-0 [grid-template-areas:'card'];
+  }
+
+  .interactive-content-list__card {
+    @apply invisible opacity-0 transition-none [grid-area:card];
+
+    /* No fade here: card and image arrive together with the block's slide */
+    &.is-active {
+      @apply visible opacity-100;
+    }
+  }
+
+  .interactive-content-list__image,
+  .interactive-content-list__image.is-active {
+    @apply transition-none;
+  }
+
+  .interactive-content-list__media {
+    @apply min-h-0;
+
+    &::before {
+      @apply block aspect-(--icl-media-ratio) content-[''];
+    }
+  }
+
+  .interactive-content-list__dots {
+    @apply flex;
+  }
+}
+
+/* ---------- Narrow: card and image stacked ---------- */
+
+@container interactive-content-list (width < 35rem) {
+  .interactive-content-list {
+    --icl-gap: 1rem;
+    --icl-card-padding: 1.375rem 1.25rem 1.5rem;
+    --icl-media-ratio: 16 / 10;
+  }
+
+  .interactive-content-list__layout {
+    @apply grid-cols-[minmax(0,1fr)];
+  }
+}
+
+/* Empty datasource hint in Pages */
+.interactive-content-list-component > .component-content > .is-empty-hint {
+  @apply block p-4 text-center text-text-basic italic;
+}

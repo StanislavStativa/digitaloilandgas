@@ -59,5 +59,9 @@
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{static,relative,absolute,fixed,sticky}");
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{,-}{inset,inset-x,inset-y,top,right,bottom,left}-{0,auto,full,1/2}");
 
+/* object-fit / object-position: object-cover, object-center, ... */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}object-{contain,cover,fill,none,scale-down}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}object-{center,top,bottom,left,right,left-top,left-bottom,right-top,right-bottom}");
+
 /* translate: -translate-y-1/2, translate-x-full, ... (centering with top-1/2 / left-1/2) */
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{,-}translate{,-x,-y}-{0,1/2,full}");

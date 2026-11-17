@@ -1,17 +1,11 @@
 .cover-background {
-  > .component-content {
-    @apply bg-no-repeat bg-cover;
-  }
+  @apply bg-no-repeat bg-cover;
 }
 .fix-background {
-  > .component-content {
-    @apply bg-no-repeat bg-cover bg-top-left bg-fixed;
-  }
+  @apply bg-no-repeat bg-cover bg-top-left bg-fixed;
 }
 .parallax-background {
-  > .component-content {
-    @apply bg-no-repeat bg-cover bg-position-[50%_0] bg-fixed max-mobile-large:bg-scroll;
-  }
+  @apply bg-no-repeat bg-cover bg-position-[50%_0] bg-fixed max-mobile-large:bg-scroll;
 }
 
 /* background color  */

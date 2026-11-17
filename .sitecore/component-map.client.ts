@@ -6,6 +6,7 @@ import { BYOCClientWrapper, FEaaSClientWrapper } from '@sitecore-content-sdk/nex
 import { Form } from '@sitecore-content-sdk/nextjs';
 
 // end of built-in import section
+import * as VideoPlayer from 'src/components/video/VideoPlayer';
 import * as NavigationMenu from 'src/components/navigation/NavigationMenu';
 import * as InteractiveContentSwitcher from 'src/components/interactive-content-list/InteractiveContentSwitcher';
 import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
@@ -16,6 +17,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCClientWrapper],
   ['FEaaSWrapper', FEaaSClientWrapper],
   ['Form', Form],
+  ['VideoPlayer', { ...VideoPlayer }],
   ['NavigationMenu', { ...NavigationMenu }],
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher }],
   ['ImageSliderCarousel', { ...ImageSliderCarousel }],

@@ -176,7 +176,12 @@ ul li {
 .component.px-section {
   padding-left: 1rem;
   padding-right: 1rem;
-  max-width: 1850px;
+
+  > .component-content {
+    max-width: 1850px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media (min-width: 768px) {

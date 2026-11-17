@@ -1,0 +1,65 @@
+/* component video */
+.video-component {
+  --video-fade-duration: 400ms;
+
+  @apply w-full max-w-full min-w-0 p-0;
+
+  /* Fluid: always the parent's width; height follows the media's own aspect ratio (never cropped or stretched) */
+  .video {
+    @apply relative block w-full max-w-full min-w-0 overflow-hidden;
+  }
+
+  .video__media,
+  .video__poster img {
+    @apply block h-auto w-full max-w-full;
+  }
+
+  /* Until the video renders frames, the poster (sized by its width/height attributes) holds the box
+     and the not-yet-visible video sits on top of it, letterboxed instead of cropped. */
+  .video__media {
+    @apply absolute inset-0 h-full;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity var(--video-fade-duration) ease;
+  }
+
+  /* No poster: the video holds its own box from the start (transparent, never black, while loading) */
+  .video:not([data-has-poster]) .video__media {
+    @apply relative h-auto;
+  }
+
+  /* Playing: the video takes over the layout with its intrinsic ratio; the poster fades out on top */
+  .video[data-state='playing'] {
+    .video__media {
+      @apply relative h-auto;
+      opacity: 1;
+    }
+
+    .video__poster {
+      @apply pointer-events-none absolute inset-0;
+      opacity: 0;
+      transition: opacity var(--video-fade-duration) ease;
+
+      img {
+        @apply h-full;
+        object-fit: contain;
+      }
+    }
+  }
+
+  &.is-editing {
+    .video__poster img {
+      @apply mx-auto;
+    }
+
+    .video__hint {
+      @apply mt-2 inline-block;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-component {
+    --video-fade-duration: 0ms;
+  }
+}

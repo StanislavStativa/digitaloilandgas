@@ -6,6 +6,8 @@ import { BYOCServerWrapper, FEaaSServerWrapper } from '@sitecore-content-sdk/nex
 import { Form } from '@sitecore-content-sdk/nextjs';
 
 // end of built-in import section
+import * as VideoPlayer from 'src/components/video/VideoPlayer';
+import * as Video from 'src/components/video/Video';
 import * as Title from 'src/components/title/Title';
 import * as StructuredData from 'src/components/structured-data/StructuredData';
 import * as RowSplitter from 'src/components/row-splitter/RowSplitter';
@@ -34,6 +36,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCServerWrapper],
   ['FEaaSWrapper', FEaaSServerWrapper],
   ['Form', { ...Form, componentType: 'client' }],
+  ['VideoPlayer', { ...VideoPlayer, componentType: 'client' }],
+  ['Video', { ...Video }],
   ['Title', { ...Title }],
   ['StructuredData', { ...StructuredData }],
   ['RowSplitter', { ...RowSplitter }],

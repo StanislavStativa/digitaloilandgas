@@ -47,3 +47,17 @@
 
 /* layout / alignment */
 @source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{text-left,text-center,text-right,text-justify,items-start,items-center,items-end,items-stretch,justify-start,justify-center,justify-end,justify-between,justify-around,self-start,self-center,self-end,flex,inline-flex,block,inline-block,grid,hidden,flex-row,flex-col,flex-wrap,flex-1}");
+
+/* overflow: overflow-hidden, overflow-x-auto, ... */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}overflow{,-x,-y}-{auto,hidden,clip,visible,scroll}");
+
+/* z-index: z-0 ... z-10, z-auto, and the default scale z-20 ... z-50 */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{,-}z-{0..10}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}z-{auto,20,30,40,50}");
+
+/* position + offsets: absolute, inset-0, top-0, -left-1/2, ... */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{static,relative,absolute,fixed,sticky}");
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{,-}{inset,inset-x,inset-y,top,right,bottom,left}-{0,auto,full,1/2}");
+
+/* translate: -translate-y-1/2, translate-x-full, ... (centering with top-1/2 / left-1/2) */
+@source inline("{,sm:,md:,lg:,xl:,2xl:,mobile:,mobile-horizontal:,mobile-large:,desktop:}{,-}translate{,-x,-y}-{0,1/2,full}");

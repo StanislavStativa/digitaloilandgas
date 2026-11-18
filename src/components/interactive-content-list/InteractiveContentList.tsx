@@ -11,6 +11,9 @@ import { ContentListProps } from 'components/content-list/ContentList.props';
  * The old rendering was always white text (it sat on dark sections); the Content List variant
  * defaults to dark text and needs the "text-text-white" style, so it is forced here to keep
  * existing pages readable without re-editing them.
+ *
+ * @deprecated Obsolete rendering. Use Content List (`components/content-list/ContentList`) with the
+ * Interactive variant instead; this file goes away once no page uses the old rendering.
  */
 export const Default: FC<ContentListProps> = (props) => (
   <Interactive {...props} params={{ ...props.params, styles: cn(props.params?.styles, 'text-text-white') }} />

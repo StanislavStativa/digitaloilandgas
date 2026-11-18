@@ -8,8 +8,8 @@ import {
 } from 'lib/component-props';
 import { ReactNode } from 'react';
 
-/** "Interactive Content Item" child of the datasource (one card + its image) */
-export interface InteractiveContentItem {
+/** "Content List Item" child of the datasource (one card + its image) */
+export interface ContentListItem {
   id: string;
   title?: GraphQLTextField;
   description?: GraphQLRichTextField;
@@ -19,18 +19,19 @@ export interface InteractiveContentItem {
 
 /**
  * Shape returned by the rendering's ComponentQuery
- * (/sitecore/layout/Renderings/.../digitaloilandgas/Interactive Content List).
- * The "Interactive Content List" datasource has no own fields; its children are the cards, in item order.
+ * (/sitecore/layout/Renderings/.../digitaloilandgas/Content List).
+ * The "Content List" datasource has no own fields; its children are the cards, in item order.
+ * Both variants (Default grid, Interactive switcher) use the same datasource.
  */
-export interface InteractiveContentListDatasource {
-  items?: { results?: InteractiveContentItem[] };
+export interface ContentListDatasource {
+  items?: { results?: ContentListItem[] };
 }
 
-export interface InteractiveContentListProps extends ComponentProps {
-  fields?: CompatibleDatasource<InteractiveContentListDatasource>;
+export interface ContentListProps extends ComponentProps {
+  fields?: CompatibleDatasource<ContentListDatasource>;
 }
 
-/** One item rendered on the server and handed to the client switcher */
+/** Interactive variant: one item rendered on the server and handed to the client switcher */
 export interface InteractiveContentEntry {
   id: string;
   /** Plain-text title, used for accessible names of the select button and the dots */

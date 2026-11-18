@@ -20,12 +20,13 @@ import * as Navigation from 'src/components/navigation/Navigation';
 import * as LinkList from 'src/components/link-list/LinkList';
 import * as Link from 'src/components/link/Link';
 import * as IntroSection from 'src/components/intro-section/IntroSection';
-import * as InteractiveContentSwitcher from 'src/components/interactive-content-list/InteractiveContentSwitcher';
 import * as InteractiveContentList from 'src/components/interactive-content-list/InteractiveContentList';
 import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
 import * as ImageSlider from 'src/components/image-slider/ImageSlider';
 import * as ImageMarquee from 'src/components/image-marquee/ImageMarquee';
 import * as Image from 'src/components/image/Image';
+import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
+import * as ContentList from 'src/components/content-list/ContentList';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
@@ -50,12 +51,13 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['LinkList', { ...LinkList }],
   ['Link', { ...Link }],
   ['IntroSection', { ...IntroSection }],
-  ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher, componentType: 'client' }],
   ['InteractiveContentList', { ...InteractiveContentList }],
   ['ImageSliderCarousel', { ...ImageSliderCarousel, componentType: 'client' }],
   ['ImageSlider', { ...ImageSlider }],
   ['ImageMarquee', { ...ImageMarquee }],
   ['Image', { ...Image }],
+  ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher, componentType: 'client' }],
+  ['ContentList', { ...ContentList }],
   ['ContentBlock', { ...ContentBlock, componentType: 'client' }],
   ['Container', { ...Container }],
   ['CountUp', { ...CountUp, componentType: 'client' }],

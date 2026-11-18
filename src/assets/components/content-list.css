@@ -1,15 +1,101 @@
-/* component interactive-content-list */
+/* component content-list */
 
 /* The component's own width picks the layout (container queries), so it adapts inside
    column splitters, containers and resizing Pages panels without a window resize.
-   The outer background stays transparent: the dark section belongs to the parent container. */
-.interactive-content-list-component {
-  @apply @container/interactive-content-list w-full;
+   The outer background stays transparent: the section background belongs to the parent container. */
+.content-list-component {
+  @apply @container/content-list w-full;
 }
+
+/* ================= Default variant: static card grid ================= */
+
+.content-list {
+  --cl-card-border: #ffffff;
+  --cl-card-color: rgb(47 40 40);
+  --cl-muted-color: rgb(117 107 107);
+  --cl-radius: 0.5rem;
+  --cl-image-radius: 0.25rem;
+  --cl-image-height: 10rem;
+  --cl-gap: 3rem;
+  --cl-card-padding: 1.5rem;
+  --cl-focus: rgb(47 40 40);
+
+  @apply grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-(--cl-gap);
+}
+
+/* "text-text-white" rendering style (params.styles lands on the wrapper): the card children set
+   their own colours, so inherited `color` never reaches them; switch the palette variables instead */
+.content-list-component.text-text-white .content-list {
+  --cl-card-color: var(--color-text-white);
+  --cl-muted-color: rgb(255 255 255 / 0.8);
+  --cl-focus: var(--color-text-white);
+}
+
+/* Frosted card over the section background; the CTA is pinned to the bottom so
+   links line up across a row whatever the text length */
+.content-list__card {
+  @apply relative box-border flex min-w-0 flex-col p-(--cl-card-padding);
+  @apply rounded-(--cl-radius) border border-solid border-(color:--cl-card-border) bg-transparent backdrop-blur-lg;
+  @apply text-(--cl-card-color) wrap-break-word;
+}
+
+.content-list__image {
+  @apply relative h-(--cl-image-height) flex-none overflow-hidden rounded-(--cl-image-radius);
+
+  img {
+    @apply block h-full w-full max-w-none object-cover object-center;
+  }
+
+  .is-empty-hint {
+    @apply absolute inset-x-0 bottom-1/2 translate-y-1/2 text-center text-(--cl-muted-color) italic;
+  }
+}
+
+.content-list__title {
+  @apply mt-5 mb-0 pb-2 text-lg leading-[1.53] font-bold text-inherit;
+
+  &:first-child {
+    @apply mt-0;
+  }
+}
+
+.content-list__description {
+  @apply pb-6 text-(--cl-muted-color);
+
+  p:first-child {
+    @apply mt-0;
+  }
+}
+
+.content-list__cta {
+  @apply mt-auto;
+
+  a {
+    @apply inline-block text-base leading-normal font-bold text-(--cl-card-color) uppercase;
+    @apply underline decoration-2 underline-offset-[0.5rem];
+    @apply transition-opacity duration-180 ease-[ease] motion-reduce:transition-none;
+    @apply hover:text-(--cl-card-color) hover:opacity-80;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--cl-focus);
+  }
+}
+
+@container content-list (width >= 40rem) {
+  .content-list {
+    @apply grid-cols-[repeat(2,minmax(0,1fr))];
+  }
+}
+
+@container content-list (width >= 68.75rem) {
+  .content-list {
+    @apply grid-cols-[repeat(3,minmax(0,1fr))];
+  }
+}
+
+/* ================= Interactive variant ================= */
 
 .interactive-content-list {
   --icl-card-bg: rgb(255 255 255 / 0.34);
-  --icl-card-color: #ffffff;
+  --icl-card-color: rgb(47 40 40);
   --icl-accent: rgb(255 43 30);
   --icl-accent-width: 0.5rem;
   --icl-radius: 0.25rem;
@@ -22,9 +108,15 @@
   --icl-dot-size: 0.5625rem;
   --icl-dot-hit: 1.625rem;
   --icl-dot-color: #c7c1c1;
-  --icl-focus: #ffffff;
+  --icl-focus: rgb(47 40 40);
 
   @apply relative w-full min-w-0 bg-transparent;
+}
+
+/* "text-text-white" rendering style: same palette switch as the Default variant */
+.content-list-component.text-text-white .interactive-content-list {
+  --icl-card-color: var(--color-text-white);
+  --icl-focus: var(--color-text-white);
 }
 
 /* ---------- Desktop (default): all cards left, active image right ---------- */
@@ -153,7 +245,7 @@
 
 /* ---------- Tablet / mobile: one card + its image side by side, dots below ---------- */
 
-@container interactive-content-list (width < 68.75rem) {
+@container content-list (width < 68.75rem) {
   /* horizontal swipes switch items, vertical scrolling stays with the page */
   .interactive-content-list {
     --icl-gap: 2rem;
@@ -205,7 +297,7 @@
 
 /* ---------- Narrow: card and image stacked ---------- */
 
-@container interactive-content-list (width < 35rem) {
+@container content-list (width < 35rem) {
   .interactive-content-list {
     --icl-gap: 1rem;
     --icl-card-padding: 1.375rem 1.25rem 1.5rem;
@@ -218,6 +310,6 @@
 }
 
 /* Empty datasource hint in Pages */
-.interactive-content-list-component > .component-content > .is-empty-hint {
+.content-list-component > .component-content > .is-empty-hint {
   @apply block p-4 text-center text-text-basic italic;
 }

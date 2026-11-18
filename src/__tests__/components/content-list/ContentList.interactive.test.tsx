@@ -387,4 +387,11 @@ describe('InteractiveContentList (legacy rendering)', () => {
     expect(getCards(container)).toHaveLength(3);
     expectActive(container, 0);
   });
+
+  it('keeps the old white text on existing pages, alongside the authored styles', async () => {
+    const { Default: LegacyInteractiveContentList } = await import('../../../components/interactive-content-list/InteractiveContentList');
+    const { container } = render(<LegacyInteractiveContentList {...makeProps()} />);
+
+    expect(container.querySelector('.component')).toHaveClass('text-text-white', 'custom-style');
+  });
 });

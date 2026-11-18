@@ -20,11 +20,19 @@ const renderBody = (item: ContentListItem, isEditing: boolean, block: string) =>
   return (
     <>
       {(isEditing || hasDescription(item)) && <RichText field={getFieldValue(item.description)} className={`${block}__description`} />}
-      {/* No empty anchor on the live site; in Pages the empty field stays editable */}
-      {link && (isEditing || hasLink(item)) && (
+      {/* No empty anchor on the live site; in Pages the empty field stays editable. If the query returns no
+          ctaLink at all there is no field metadata to edit inline, so tell the editor instead of rendering nothing */}
+      {isEditing ? (
         <div className={`${block}__cta`}>
-          <CompatibleLink field={link} />
+          {link ? <CompatibleLink field={link} /> : <span className="is-empty-hint">CTA link: set it in the item fields</span>}
         </div>
+      ) : (
+        link &&
+        hasLink(item) && (
+          <div className={`${block}__cta`}>
+            <CompatibleLink field={link} />
+          </div>
+        )
       )}
     </>
   );
@@ -88,9 +96,12 @@ export const Default: FC<ContentListProps> = (props) => (
             {(isEditing || hasImage(item)) && (
               <div className="content-list__image">{renderImage(item, i, isEditing, 'lazy')}</div>
             )}
-            <h4 className="content-list__title">
-              <Text field={getFieldValue(item.title)} />
-            </h4>
+            {/* Image-only items on the live site: no empty heading */}
+            {(isEditing || titleText(item)) && (
+              <h4 className="content-list__title">
+                <Text field={getFieldValue(item.title)} />
+              </h4>
+            )}
             {renderBody(item, isEditing, 'content-list')}
           </div>
         ))}

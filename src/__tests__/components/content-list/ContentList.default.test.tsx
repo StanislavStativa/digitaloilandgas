@@ -72,6 +72,28 @@ describe('ContentList (Default variant)', () => {
     expect(card.querySelector('h4')).toHaveTextContent('Item title 1');
   });
 
+  it('renders no empty heading for an image-only item on the live site, but keeps it editable in Pages', () => {
+    const items = [makeItem(1, { title: null })];
+
+    const { container } = render(<ContentList {...makeProps({ items })} />);
+    const [card] = getCards(container);
+    expect(card.querySelector('img')).not.toBeNull();
+    expect(card.querySelector('h4')).toBeNull();
+
+    const { container: editing } = render(<ContentList {...makeProps({ isEditing: true, items })} />);
+    expect(getCards(editing)[0].querySelector('h4.content-list__title')).not.toBeNull();
+  });
+
+  it('keeps a CTA slot with a hint in Pages when the query returns no ctaLink field', () => {
+    const items = [{ ...makeItem(1), ctaLink: undefined }];
+
+    const { container: live } = render(<ContentList {...makeProps({ items })} />);
+    expect(getCards(live)[0].querySelector('.content-list__cta')).toBeNull();
+
+    const { container } = render(<ContentList {...makeProps({ isEditing: true, items })} />);
+    expect(getCards(container)[0].querySelector('.content-list__cta')).toHaveTextContent('CTA link: set it in the item fields');
+  });
+
   it('renders nothing on the live site without items, and skips items with neither title nor image', () => {
     const { container: empty } = render(<ContentList {...makeProps({ count: 0 })} />);
     expect(empty).toBeEmptyDOMElement();

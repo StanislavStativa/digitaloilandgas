@@ -47,6 +47,33 @@
     }
   }
 
+  /* Background mode (Styles checkbox "Video as background" → `is-background`): the component covers the
+     nearest positioned ancestor (it needs `relative`) at any height, behind that ancestor's content;
+     video and poster fill it cropped and centred. An object-position utility on the component
+     (object-top, …) is passed down to the media. */
+  &.is-background {
+    @apply pointer-events-none absolute inset-0 z-1 h-full w-full overflow-hidden;
+
+    .component-content,
+    .video,
+    .video__poster {
+      @apply h-full w-full;
+      object-position: inherit;
+    }
+
+    .video .video__media,
+    .video .video__poster {
+      @apply absolute inset-0 h-full w-full max-w-none;
+    }
+
+    .video .video__media,
+    .video .video__poster img {
+      @apply h-full w-full max-w-none;
+      object-fit: cover;
+      object-position: inherit;
+    }
+  }
+
   &.is-editing {
     .video__poster img {
       @apply mx-auto;

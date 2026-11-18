@@ -26,6 +26,8 @@ import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCar
 import * as ImageSlider from 'src/components/image-slider/ImageSlider';
 import * as ImageMarquee from 'src/components/image-marquee/ImageMarquee';
 import * as Image from 'src/components/image/Image';
+import * as FooterNavigation from 'src/components/footer/FooterNavigation';
+import * as Footer from 'src/components/footer/Footer';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
@@ -56,6 +58,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['ImageSlider', { ...ImageSlider }],
   ['ImageMarquee', { ...ImageMarquee }],
   ['Image', { ...Image }],
+  ['FooterNavigation', { ...FooterNavigation, componentType: 'client' }],
+  ['Footer', { ...Footer }],
   ['ContentBlock', { ...ContentBlock, componentType: 'client' }],
   ['Container', { ...Container }],
   ['CountUp', { ...CountUp, componentType: 'client' }],

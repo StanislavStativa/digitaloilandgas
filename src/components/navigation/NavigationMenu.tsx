@@ -137,10 +137,13 @@ export const NavigationMenu = ({ params, fields }: NavigationMenuProps) => {
   const pathname = usePathname();
   const { styles, RenderingIdentifier: id } = params;
 
-  // Close the mobile menu on route change.
-  useEffect(() => {
+  // Close the mobile menu on route change (incl. back/forward), adjusted during render
+  // so the new page never paints with the menu still open
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (pathname !== menuPathname) {
+    setMenuPathname(pathname);
     setIsMenuOpen(false);
-  }, [pathname]);
+  }
 
   // Lock page scroll while the mobile menu is open.
   useEffect(() => {

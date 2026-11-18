@@ -21,30 +21,31 @@ export const formatNumber = (n: number, decimals: number) =>
  */
 export const CountUp: FC<CountUpProps> = ({ end, decimals, duration = 2000 }) => {
   const ref = useRef<HTMLSpanElement>(null);
-  // Server/no-JS render shows the final value; the client resets to 0 only once it can animate
-  const [current, setCurrent] = useState(end);
+  // Animation progress 0..1, not the value: the shown number always follows `end`.
+  // Server/no-JS/reduced-motion render stays at 1 (the final value).
+  const [progress, setProgress] = useState(1);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-      setCurrent(end);
-      return;
-    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
 
-    setCurrent(0);
     let frame = 0;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
+        // Off-screen: wait at 0 so the count starts from 0 when it scrolls in
+        if (!entry.isIntersecting) {
+          setProgress(0);
+          return;
+        }
         observer.disconnect();
 
         const start = performance.now();
         const tick = (now: number) => {
-          const progress = Math.min((now - start) / duration, 1);
-          setCurrent(end * easeOutCubic(progress));
-          if (progress < 1) frame = requestAnimationFrame(tick);
+          const next = Math.min((now - start) / duration, 1);
+          setProgress(next);
+          if (next < 1) frame = requestAnimationFrame(tick);
         };
         frame = requestAnimationFrame(tick);
       },
@@ -66,7 +67,7 @@ export const CountUp: FC<CountUpProps> = ({ end, decimals, duration = 2000 }) =>
         {final}
       </span>
       <span className="count-up__value" aria-hidden="true">
-        {formatNumber(current, decimals)}
+        {formatNumber(end * easeOutCubic(progress), decimals)}
       </span>
     </span>
   );

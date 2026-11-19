@@ -1,4 +1,4 @@
-import { InteractiveContentItem, InteractiveContentListProps } from 'components/interactive-content-list/InteractiveContentList.props';
+import { ContentListItem, ContentListProps } from 'components/content-list/ContentList.props';
 
 interface ItemOptions {
   title?: string | null;
@@ -8,7 +8,7 @@ interface ItemOptions {
 }
 
 /** Pass `null` for a field that is empty in Sitecore */
-export const makeItem = (n: number, options: ItemOptions = {}): InteractiveContentItem => {
+export const makeItem = (n: number, options: ItemOptions = {}): ContentListItem => {
   const {
     title = `Item title ${n}`,
     description = `<p>Description ${n}</p>`,
@@ -26,15 +26,15 @@ export const makeItem = (n: number, options: ItemOptions = {}): InteractiveConte
 };
 
 export const makeProps = (
-  options: { count?: number; items?: InteractiveContentItem[]; isEditing?: boolean; id?: string; noDatasource?: boolean } = {},
-): InteractiveContentListProps => {
+  options: { count?: number; items?: ContentListItem[]; isEditing?: boolean; id?: string; noDatasource?: boolean } = {},
+): ContentListProps => {
   const { count = 3, isEditing = false, id = 'icl-1', noDatasource = false } = options;
   const items = options.items ?? Array.from({ length: count }, (_, i) => makeItem(i + 1));
 
   return {
-    rendering: { componentName: 'InteractiveContentList' },
+    rendering: { componentName: 'ContentList' },
     params: { RenderingIdentifier: id, styles: 'custom-style' },
     page: { mode: { isEditing } },
     fields: noDatasource ? {} : { data: { datasource: { items: { results: items } } } },
-  } as unknown as InteractiveContentListProps;
+  } as unknown as ContentListProps;
 };

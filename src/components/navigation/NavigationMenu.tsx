@@ -60,7 +60,9 @@ const isCtaItem = (fields: Fields): boolean =>
 const NavigationListItem: React.FC<NavigationListItemProps> = ({ fields, handleClick, relativeLevel }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { page } = useSitecore();
-  const pathname = usePathname();
+  // Not usePathname(): the proxy rewrites the URL to /[site]/[locale]/..., so the server and the browser
+  // can see different paths (hydration mismatch). The route's item path is identical on both sides.
+  const currentPath = page.layout.sitecore.context.itemPath ?? '';
 
   if (!fields) {
     return null;
@@ -68,7 +70,7 @@ const NavigationListItem: React.FC<NavigationListItemProps> = ({ fields, handleC
 
   const children = fields.Children ?? [];
   const hasChildren = children.length > 0;
-  const isCurrent = isCurrentItem(fields, pathname ?? '');
+  const isCurrent = isCurrentItem(fields, currentPath);
   const isCta = relativeLevel === 1 && isCtaItem(fields);
 
   const classNames = [
@@ -135,10 +137,13 @@ export const NavigationMenu = ({ params, fields }: NavigationMenuProps) => {
   const pathname = usePathname();
   const { styles, RenderingIdentifier: id } = params;
 
-  // Close the mobile menu on route change.
-  useEffect(() => {
+  // Close the mobile menu on route change (incl. back/forward), adjusted during render
+  // so the new page never paints with the menu still open
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (pathname !== menuPathname) {
+    setMenuPathname(pathname);
     setIsMenuOpen(false);
-  }, [pathname]);
+  }
 
   // Lock page scroll while the mobile menu is open.
   useEffect(() => {

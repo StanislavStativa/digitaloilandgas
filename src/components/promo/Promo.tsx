@@ -9,24 +9,31 @@ import { getFieldValue } from 'lib/component-props';
 import { buildProductJsonLd } from 'src/lib/structured-data/schema';
 import { PromoContentProps, PromoFields as Fields, PromoProps } from './promo.props';
 
+interface PromoWrapperProps {
+  styles?: string;
+  id?: string;
+  children: JSX.Element;
+}
+
+// Module level: a wrapper defined inside PromoContent would remount the whole promo on every render
+const Wrapper = ({ styles, id, children }: PromoWrapperProps): JSX.Element => (
+  <article
+    className={`component promo ${styles}`}
+    id={id}
+    itemScope
+    itemType="https://schema.org/Product"
+  >
+    <div className="component-content">{children}</div>
+  </article>
+);
+
 const PromoContent = (props: PromoContentProps): JSX.Element => {
   const { fields, params, renderText } = props;
   const { styles, RenderingIdentifier: id } = params;
 
-  const Wrapper = ({ children }: { children: JSX.Element }): JSX.Element => (
-    <article
-      className={`component promo ${styles}`}
-      id={id}
-      itemScope
-      itemType="https://schema.org/Product"
-    >
-      <div className="component-content">{children}</div>
-    </article>
-  );
-
   if (!fields) {
     return (
-      <Wrapper>
+      <Wrapper styles={styles} id={id}>
         <span className="is-empty-hint">Promo</span>
       </Wrapper>
     );
@@ -37,7 +44,7 @@ const PromoContent = (props: PromoContentProps): JSX.Element => {
   const promoLinkField = getFieldValue(fields.PromoLink);
 
   return (
-    <Wrapper>
+    <Wrapper styles={styles} id={id}>
       <>
         <figure className="field-promoicon" itemProp="image">
           <ContentSdkImage field={promoIconField} />

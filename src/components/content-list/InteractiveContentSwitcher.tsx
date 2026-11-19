@@ -3,12 +3,12 @@ import { FC, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } 
 import { cn } from 'lib/utils';
 import { useSwipe } from 'hooks/useSwipe';
 import { usePrefersReducedMotion } from 'hooks/usePrefersReducedMotion';
-import { INTERACTIVE_CONTENT_SLIDE_DURATION, InteractiveContentSwitcherProps } from './InteractiveContentList.props';
+import { INTERACTIVE_CONTENT_SLIDE_DURATION, InteractiveContentSwitcherProps } from './ContentList.props';
 
 type Direction = 1 | -1;
 
 /**
- * Client part of Interactive Content List. One `activeIndex` drives every layout:
+ * Client part of the Content List "Interactive" variant. One `activeIndex` drives every layout:
  * - desktop: all cards + the active image; hover / focus / click selects a card;
  * - tablet/mobile: only the active card + its image, dots and swipe to switch.
  * The layout is chosen in CSS with container queries on the component's own width,

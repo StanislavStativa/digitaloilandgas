@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, within } from '@testing-library/react';
-import { Default as InteractiveContentList } from '../../../components/interactive-content-list/InteractiveContentList';
-import { makeItem, makeProps } from './InteractiveContentList.mockProps';
+import { Interactive as InteractiveContentList } from '../../../components/content-list/ContentList';
+import { makeItem, makeProps } from './ContentList.mockProps';
 
 type MockField = { value?: Record<string, string> | string };
 
@@ -57,7 +57,7 @@ const swipe = (element: HTMLElement, dx: number, dy = 0) => {
   fireEvent.pointerUp(element, { pointerType: 'touch', isPrimary: true, clientX: 200 + dx, clientY: 200 + dy });
 };
 
-describe('InteractiveContentList', () => {
+describe('ContentList (Interactive variant)', () => {
   it('renders every item in datasource order with an h4 title, description, CTA and image', () => {
     const { container } = render(<InteractiveContentList {...makeProps()} />);
 
@@ -72,7 +72,7 @@ describe('InteractiveContentList', () => {
     expect(images[1]).toHaveAttribute('loading', 'lazy');
 
     const wrapper = container.querySelector('.component') as HTMLElement;
-    expect(wrapper).toHaveClass('interactive-content-list-component', 'custom-style');
+    expect(wrapper).toHaveClass('content-list-component', 'content-list-component--interactive', 'custom-style');
     expect(wrapper).toHaveAttribute('id', 'icl-1');
   });
 
@@ -230,7 +230,7 @@ describe('InteractiveContentList', () => {
     expect(noDs).toHaveTextContent('select or create a datasource');
 
     const { container: noItems } = render(<InteractiveContentList {...makeProps({ isEditing: true, count: 0 })} />);
-    expect(noItems).toHaveTextContent('add Interactive Content Item children');
+    expect(noItems).toHaveTextContent('add Content List Item children');
 
     const items = [makeItem(1, { image: null, title: null })];
     const { container } = render(<InteractiveContentList {...makeProps({ isEditing: true, items })} />);
@@ -369,11 +369,29 @@ describe('InteractiveContentList', () => {
         <InteractiveContentList {...makeProps({ id: 'b' })} />
       </>,
     );
-    const [a, b] = Array.from(container.querySelectorAll<HTMLElement>('.interactive-content-list-component'));
+    const [a, b] = Array.from(container.querySelectorAll<HTMLElement>('.content-list-component'));
 
     fireEvent.mouseEnter(getCards(a)[2]);
     expectActive(a, 2);
     expectActive(b, 0);
     expect(a.querySelector('.interactive-content-list__media')?.id).not.toBe(b.querySelector('.interactive-content-list__media')?.id);
+  });
+});
+
+describe('InteractiveContentList (legacy rendering)', () => {
+  it('renders the Content List Interactive variant', async () => {
+    const { Default: LegacyInteractiveContentList } = await import('../../../components/interactive-content-list/InteractiveContentList');
+    const { container } = render(<LegacyInteractiveContentList {...makeProps()} />);
+
+    expect(container.querySelector('.component')).toHaveClass('content-list-component', 'content-list-component--interactive');
+    expect(getCards(container)).toHaveLength(3);
+    expectActive(container, 0);
+  });
+
+  it('keeps the old white text on existing pages, alongside the authored styles', async () => {
+    const { Default: LegacyInteractiveContentList } = await import('../../../components/interactive-content-list/InteractiveContentList');
+    const { container } = render(<LegacyInteractiveContentList {...makeProps()} />);
+
+    expect(container.querySelector('.component')).toHaveClass('text-text-white', 'custom-style');
   });
 });

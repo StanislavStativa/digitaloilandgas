@@ -54,7 +54,8 @@ export const Default: React.FC<ImageProps> = (props) => {
     return <ImageDefault {...props} />;
   }
 
-  const Image = () => (
+  // An element, not an inline component: a component defined here would remount the <img> on every render
+  const image = (
     <ContentSdkImage
       field={imageField}
       sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"
@@ -65,13 +66,7 @@ export const Default: React.FC<ImageProps> = (props) => {
 
   return (
     <ImageWrapper className={`component image ${styles}`} id={typeof id === 'string' ? id : undefined}>
-      {shouldWrapWithLink ? (
-        <CompatibleLink field={targetUrlField}>
-          <Image />
-        </CompatibleLink>
-      ) : (
-        <Image />
-      )}
+      {shouldWrapWithLink ? <CompatibleLink field={targetUrlField}>{image}</CompatibleLink> : image}
       <figcaption className="image-caption field-imagecaption">
         <Text tag="span" field={imageCaptionField} />
       </figcaption>

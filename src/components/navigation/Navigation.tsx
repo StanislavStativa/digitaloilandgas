@@ -1,4 +1,5 @@
 import client from 'lib/sitecore-client';
+import { normalizeId } from 'lib/utils';
 import { NavigationFields, NavigationProps, NavigationSiteRootQueryResult, NavigationSubmenusQueryResult, SubmenuLinkItem } from './navigation.props';
 import { NavigationMenu } from './NavigationMenu';
 
@@ -39,8 +40,6 @@ const SUBMENUS_QUERY = /* GraphQL */ `
     }
   }
 `;
-
-const normalizeId = (id?: string) => id?.replace(/[{}-]/g, '').toLowerCase() ?? '';
 
 const toNavigationItem = (link: SubmenuLinkItem): NavigationFields => {
   const value = link.link?.jsonValue?.value;

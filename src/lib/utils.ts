@@ -35,3 +35,12 @@ export function readCheckbox(value: unknown, fallback = false): boolean {
 export function cn(...classes: Array<string | false | null | undefined>): string {
   return classes.filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
 }
+
+/**
+ * Sitecore item id → one comparable form: no braces/dashes, lowercase.
+ * Edge returns "E33BD81D147C...", layout data "{E33BD81D-147C-...}"; both normalize to the same string.
+ * Missing ids become "".
+ */
+export function normalizeId(id: string | null | undefined): string {
+  return (id ?? "").replace(/[{}-]/g, "").toLowerCase();
+}

@@ -10,6 +10,7 @@ import * as VideoPlayer from 'src/components/video/VideoPlayer';
 import * as NavigationMenu from 'src/components/navigation/NavigationMenu';
 import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
 import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
+import * as FooterNavigation from 'src/components/footer/FooterNavigation';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as CountUp from 'src/components/company-statistics/CountUp';
 
@@ -21,6 +22,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['NavigationMenu', { ...NavigationMenu }],
   ['ImageSliderCarousel', { ...ImageSliderCarousel }],
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher }],
+  ['FooterNavigation', { ...FooterNavigation }],
   ['ContentBlock', { ...ContentBlock }],
   ['CountUp', { ...CountUp }],
 ]);

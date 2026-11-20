@@ -29,7 +29,10 @@ export const FooterNavigation: FC<FooterNavigationProps> = ({ entries, isEditing
           <div key={entry.id} className={cn('footer-nav__group', isOpen && 'is-open')}>
             <h2 className="footer-nav__heading">
               {isEditing ? (
-                <span className="footer-nav__title footer-nav__title--editing">{entry.title}</span>
+                <span className="footer-nav__title footer-nav__title--editing">
+                  {entry.title}
+                  {entry.titleLink}
+                </span>
               ) : (
                 <>
                   {/* Mobile accordion trigger */}
@@ -44,8 +47,8 @@ export const FooterNavigation: FC<FooterNavigationProps> = ({ entries, isEditing
                     <span>{entry.title}</span>
                     <ChevronDownIcon className="footer-nav__chevron" />
                   </button>
-                  {/* Desktop/tablet column title */}
-                  <span className="footer-nav__title">{entry.title}</span>
+                  {/* Desktop/tablet column title: a link when the group's Title Link is set */}
+                  <span className="footer-nav__title">{entry.titleLink ?? entry.title}</span>
                 </>
               )}
             </h2>

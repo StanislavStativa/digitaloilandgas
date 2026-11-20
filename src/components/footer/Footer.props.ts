@@ -29,6 +29,8 @@ export interface FooterSection {
   template?: { id?: string } | null;
   /** Group title; null on the social links folder */
   title?: GraphQLTextField | null;
+  /** Optional group title link (desktop/tablet column title); null on the social links folder */
+  titleLink?: GraphQLLinkField | null;
   items?: { results?: FooterSectionItem[] };
 }
 
@@ -65,6 +67,11 @@ export interface FooterNavigationEntry {
   id: string;
   /** Title field (editable in Pages) */
   title: ReactNode;
+  /**
+   * Title Link field. Live site: the desktop/tablet column title wrapped in the link (absent when the link is empty).
+   * Pages: the editable link chrome shown next to the title.
+   */
+  titleLink?: ReactNode;
   /** The group's link list */
   links: ReactNode;
 }

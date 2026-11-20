@@ -189,6 +189,24 @@ describe('Footer', () => {
       expect(Array.from(container.querySelectorAll('.footer-social__link')).map((a) => a.getAttribute('aria-label'))).toEqual(['LinkedIn']);
     });
 
+    it('links the desktop column title when the group has a Title Link, keeping the mobile toggle a button', () => {
+      const [who, what] = defaultGroups();
+      const linkedWho = { ...who, titleLink: { jsonValue: { value: { href: '/who-we-are' } } } };
+      const emptyWhat = { ...what, titleLink: { jsonValue: { value: { href: '' } } } };
+      const { container } = render(
+        <Footer {...makeProps({ datasource: makeDatasource({ sections: { results: [linkedWho, emptyWhat] } }) })} />,
+      );
+
+      const titles = container.querySelectorAll('.footer-nav__title');
+      // The link sits inline inside the block title, so only the text is clickable
+      const titleLink = within(titles[0] as HTMLElement).getByRole('link');
+      expect(titleLink).toHaveAttribute('href', '/who-we-are');
+      expect(titleLink).toHaveTextContent('Who We Are');
+      expect(within(titles[1] as HTMLElement).queryByRole('link')).toBeNull();
+      expect(titles[1]).toHaveTextContent('What We Do');
+      expect(getToggles(container).map((b) => b.tagName)).toEqual(['BUTTON', 'BUTTON']);
+    });
+
     it('skips groups without a title and links without a destination', () => {
       const groups = [makeGroup('untitled', null, [['Orphan', '/orphan']]), makeGroup('who', 'Who We Are', [['Contact Us', '/contact-us'], null])];
       const { container } = render(<Footer {...makeProps({ datasource: makeDatasource({ sections: { results: groups } }) })} />);

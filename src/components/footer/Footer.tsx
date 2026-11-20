@@ -43,6 +43,35 @@ const NavigationLinks: FC<FooterNavigationLinksProps> = ({ links, isEditing }) =
   );
 };
 
+/**
+ * Group title link (desktop/tablet only; the mobile accordion trigger stays a button).
+ * Live site: the title text wrapped in the link, or nothing when the link has no destination.
+ * Pages: a fixed placeholder so the Title Link field stays editable next to the title.
+ */
+const hasTitleLink = (group: FooterSection, isEditing: boolean) => {
+  const link = getFieldValue(group.titleLink);
+  return Boolean(link) && (isEditing || Boolean(hrefOf(link)));
+};
+
+const GroupTitleLink: FC<{ group: FooterSection; isEditing: boolean }> = ({ group, isEditing }) => {
+  const link = getFieldValue(group.titleLink);
+  if (!link) return null;
+
+  if (isEditing) {
+    return (
+      <CompatibleLink field={link} className="footer-nav__title-link-edit">
+        [Title link]
+      </CompatibleLink>
+    );
+  }
+
+  return (
+    <CompatibleLink field={link} className="footer-nav__title-link" rel={relFor(link)}>
+      {textOf(group.title)}
+    </CompatibleLink>
+  );
+};
+
 const SocialLink: FC<FooterSocialLinkProps> = ({ item, isEditing }) => {
   const link = getFieldValue(item.link);
   const label = textOf(item.accessibleLabel) || String(link?.value?.text ?? '').trim() || undefined;
@@ -101,6 +130,7 @@ export const Default: FC<FooterProps> = ({ fields, params, page }) => {
   const entries: FooterNavigationEntry[] = groups.map((group) => ({
     id: group.id,
     title: <Text field={getFieldValue(group.title)} tag="span" />,
+    titleLink: hasTitleLink(group, isEditing) ? <GroupTitleLink group={group} isEditing={isEditing} /> : undefined,
     links: <NavigationLinks links={group.items?.results ?? []} isEditing={isEditing} />,
   }));
 

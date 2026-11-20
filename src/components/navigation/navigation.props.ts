@@ -6,6 +6,8 @@ export interface NavigationFields {
   Id: string;
   Href: string;
   Querystring: string;
+  /** Link target (e.g. "_blank"); only set for submenu links from a Link List. */
+  Target?: string;
   Styles: string[];
   NavigationTitle?: CompatibleField<TextField>;
   Title?: CompatibleField<TextField>;
@@ -36,6 +38,16 @@ export interface SubmenuLinkItem {
   id: string;
   displayName: string;
   link?: { jsonValue?: LinkField };
+}
+
+/** A Link List from `{site}/Data/Navigation`, ready to be attached to the navigation item it belongs to. */
+export interface Submenu {
+  /** Normalized ids of the pages the list's internal links point at. */
+  targetIds: Set<string>;
+  /** Normalized paths of the pages the list's internal links point at. */
+  targetPaths: string[];
+  /** The list's links as navigation items. */
+  items: NavigationFields[];
 }
 
 /** Result of the `NavigationSiteRoot` query. */

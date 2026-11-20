@@ -6,6 +6,7 @@ import { CompatibleLink } from 'components/content-sdk/CompatibleLink';
 import { ChevronDownIcon } from 'components/icons/ChevronDownIcon';
 import { getFieldValue } from 'lib/component-props';
 import { NavigationFields as Fields, NavigationListItemProps, NavigationMenuProps } from './navigation.props';
+import { normalizePath } from './navigation.utils';
 
 const MOBILE_QUERY = '(max-width: 992px)';
 const CTA_MATCHER = /contact/i;
@@ -32,15 +33,10 @@ const getLinkField = (fields?: Fields): LinkField & FieldMetadata => ({
     href: fields?.Href ?? '',
     title: getTitleString(fields),
     querystring: fields?.Querystring ?? '',
+    target: fields?.Target,
   },
   metadata: getFieldValue(fields?.NavigationTitle)?.metadata ?? getFieldValue(fields?.Title)?.metadata,
 });
-
-const normalizePath = (path?: string | null): string => {
-  if (!path) return '';
-  const clean = path.split(/[?#]/)[0].toLowerCase().replace(/\/+$/, '');
-  return clean || '/';
-};
 
 /** An item is "current" when it is the current page, or (for non-home items) an ancestor of it. */
 const isCurrentItem = (fields: Fields, pathname: string): boolean => {

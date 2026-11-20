@@ -51,6 +51,15 @@
   @apply text-[18px] max-mobile-large:p-[0_30px_10px_30px] max-md:p-[0_10px_10px_10px] max-mobile-large:text-[16px];
 
   p {
-    @apply mt-5;
+    @apply mt-1.5 mb-0;
+  }
+
+  /* base/app.css hides markers globally (ul li { list-style-type: none }); restore them for authored content. */
+  ul > li {
+    @apply list-disc list-inside;
+  }
+
+  ol > li {
+    @apply list-decimal list-inside;
   }
 }

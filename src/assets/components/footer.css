@@ -22,7 +22,7 @@ footer {
 /* component footer (Footer rendering)
    One DOM for every viewport; CSS picks the layout:
    - mobile (< 992px): accordion navigation → logo → social → copyright, with separators;
-   - desktop (>= 992px): logo | three navigation columns | social, copyright centered below;
+   - desktop (>= 992px, `lg:`): logo | three navigation columns | social, copyright centered below;
      992–1220px uses a fixed 145px logo and tighter columns so the text fits. */
 .footer-component {
   --footer-heading: #fff;
@@ -33,316 +33,150 @@ footer {
   --footer-gap: 2rem;
   --footer-duration: 250ms;
 
-  /* #footer is a flex row (base/app.css); without this the component shrinks to its content width */
-  width: 100%;
-  color: var(--footer-link);
+  /* #footer is a flex row (base/app.css); without w-full the component shrinks to its content width */
+  @apply w-full text-(color:--footer-link);
 
   :focus-visible {
-    outline: 2px solid var(--footer-focus);
-    outline-offset: 3px;
-    border-radius: 2px;
+    @apply rounded-[2px] outline-2 outline-offset-3 outline-(color:--footer-focus);
   }
 
+  /* logo column is a bit wider than the four equal columns, as in the design */
   .footer__main {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
+    @apply flex min-w-0 flex-col lg:grid lg:grid-cols-[minmax(0,1.17fr)_repeat(4,minmax(0,1fr))] lg:items-start lg:gap-x-(--footer-gap) lg:gap-y-10 lg:[grid-template-areas:'logo_nav_nav_nav_social'];
   }
 
   /* ---------- Logo ---------- */
   .footer__logo {
-    order: 2;
-    display: flex;
-    justify-content: center;
-    padding-block: 2rem;
-    border-bottom: 1px solid var(--footer-separator);
+    @apply order-2 flex justify-center border-b border-(color:--footer-separator) py-8 lg:justify-start lg:border-0 lg:p-0 lg:[grid-area:logo];
   }
 
   .footer__logo-image {
-    display: block;
-    width: 13.5rem;
-    max-width: 100%;
-    height: auto;
+    @apply block h-auto w-54 max-w-full;
   }
 
-  /* ---------- Navigation (mobile accordion by default) ---------- */
+  /* ---------- Navigation (mobile accordion by default, three always-expanded columns on desktop) ---------- */
   .footer-nav {
-    order: 1;
-    min-width: 0;
+    @apply order-1 min-w-0 lg:grid lg:grid-cols-3 lg:gap-(--footer-gap) lg:[grid-area:nav];
   }
 
   .footer-nav__group {
-    border-bottom: 1px solid var(--footer-separator);
+    @apply border-b border-(color:--footer-separator) lg:border-0;
   }
 
   .footer-nav__heading {
-    margin: 0;
-    font-family: var(--font-poppins);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    color: var(--footer-heading);
+    @apply m-0 font-poppins text-[1rem] leading-[1.3] font-semibold tracking-[0.01em] text-(color:--footer-heading) uppercase;
   }
 
   .footer-nav__toggle {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 0;
-    padding: 1.125rem 0;
-    border: 0;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    letter-spacing: inherit;
-    text-align: left;
-    text-transform: inherit;
-    cursor: pointer;
+    @apply m-0 flex w-full cursor-pointer items-center justify-between gap-4 border-0 bg-transparent px-0 py-[1.125rem] text-left tracking-[inherit] text-inherit [font:inherit] [text-transform:inherit] lg:hidden;
   }
 
   .footer-nav__chevron {
-    flex-shrink: 0;
-    transition: transform var(--footer-duration) ease;
+    @apply shrink-0 transition-[rotate] duration-(--footer-duration) ease-[ease] motion-reduce:transition-none lg:hidden;
   }
 
   .is-open > .footer-nav__heading .footer-nav__chevron {
-    transform: rotate(180deg);
+    @apply rotate-180;
   }
 
   .footer-nav__title {
-    display: none;
+    @apply hidden lg:block lg:p-0;
   }
 
   .footer-nav__title--editing {
-    display: block;
-    padding-block: 1.125rem 0.5rem;
+    @apply block pt-[1.125rem] pb-2 lg:p-0;
   }
 
-  /* Height animates via grid rows; closed panels are visibility: hidden, so their links aren't focusable */
+  /* Linked column title: inline inside the block title span, so only the text is clickable; looks like the plain title.
+     16px at every desktop/tablet width, including the smaller small-desktop heading size */
+  .footer-nav__title-link {
+    @apply text-[1rem] text-inherit no-underline;
+  }
+
+  /* Pages: Title Link placeholder under the title */
+  .footer-nav__title-link-edit {
+    @apply mt-1 block text-[0.75rem] font-normal text-inherit normal-case;
+  }
+
+  /* Height animates via grid rows; closed panels are visibility: hidden, so their links aren't focusable.
+     Desktop: every group is always expanded. */
   .footer-nav__panel {
-    display: grid;
-    grid-template-rows: 0fr;
-    visibility: hidden;
-    transition:
-      grid-template-rows var(--footer-duration) ease,
-      visibility 0s linear var(--footer-duration);
+    @apply invisible grid grid-rows-[0fr] [transition:grid-template-rows_var(--footer-duration)_ease,visibility_0s_linear_var(--footer-duration)] motion-reduce:transition-none lg:visible lg:block lg:transition-none;
 
     &[data-state='open'] {
-      grid-template-rows: 1fr;
-      visibility: visible;
-      transition:
-        grid-template-rows var(--footer-duration) ease,
-        visibility 0s linear 0s;
+      @apply visible grid-rows-[1fr] [transition:grid-template-rows_var(--footer-duration)_ease,visibility_0s_linear_0s] motion-reduce:transition-none lg:transition-none;
     }
   }
 
   .footer-nav__panel-inner {
-    min-height: 0;
-    overflow: hidden;
+    @apply min-h-0 overflow-hidden lg:overflow-visible;
   }
 
   .footer-nav__links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0 0 1.25rem 1rem;
-    list-style: none;
+    @apply m-0 flex list-none flex-col gap-3 pt-0 pr-0 pb-5 pl-4 lg:gap-[0.6rem] lg:pt-4 lg:pb-0 lg:pl-0;
   }
 
   /* reset the global li margin/size from base.css */
   .footer-nav__item,
   .footer-social__item {
-    margin: 0;
-    font-size: inherit;
-    list-style: none;
+    @apply m-0 list-none [font-size:inherit];
   }
 
   .footer-nav__link {
-    font-family: var(--font-lato);
-    font-size: 1.0625rem;
-    line-height: 1.4;
-    color: var(--footer-link);
-    text-decoration: none;
-    transition: color 150ms ease;
+    @apply font-lato text-[1.0625rem] leading-[1.4] text-(color:--footer-link) no-underline transition-[color] duration-150 ease-[ease];
   }
 
   /* ---------- Social ---------- */
   .footer-social {
-    order: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding-block: 2rem;
-    border-bottom: 1px solid var(--footer-separator);
+    @apply order-3 flex flex-col items-center gap-4 border-b border-(color:--footer-separator) py-8 lg:items-start lg:border-0 lg:p-0 lg:[grid-area:social];
   }
 
   .footer-social__heading {
-    margin: 0;
-    font-family: var(--font-poppins);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.3;
-    text-transform: uppercase;
-    color: var(--footer-heading);
+    @apply m-0 font-poppins text-[1rem] leading-[1.3] font-semibold text-(color:--footer-heading) uppercase;
   }
 
   .footer-social__list {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    @apply m-0 flex list-none flex-wrap items-center justify-center p-0 lg:justify-start;
   }
 
   .footer-social__item--editing {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.75rem;
+    @apply flex flex-col items-center gap-1 text-[0.75rem];
   }
 
   .footer-social__link {
-    display: inline-flex;
-    padding: 0.25rem;
-    line-height: 0;
-    transition: opacity 150ms ease;
+    @apply inline-flex p-1 leading-[0] transition-[opacity] duration-150 ease-[ease];
   }
 
   /* Same visual height for every icon; width follows the icon's own aspect ratio */
   .footer-social__icon {
-    display: block;
-    width: auto;
-    height: 1.75rem;
-    max-width: 3.5rem;
-    object-fit: contain;
+    @apply block h-7 w-auto max-w-14 object-contain;
   }
 
   /* ---------- Copyright ---------- */
   .footer__copyright {
-    margin: 2rem 0 0;
-    font-family: var(--font-lato);
-    font-size: 1rem;
-    line-height: 1.4;
-    text-align: center;
-    color: var(--footer-copyright);
+    @apply m-0 mt-8 text-center font-lato text-[1rem] leading-[1.4] text-(color:--footer-copyright) lg:text-[1.125rem];
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .footer-nav__panel,
-    .footer-nav__panel[data-state='open'],
-    .footer-nav__chevron {
-      transition: none;
-    }
-  }
-
-  /* ---------- Desktop: logo | three navigation columns | social; accordion off, every group expanded ---------- */
-  @media (min-width: 992px) {
-    .footer__main {
-      display: grid;
-      /* logo column is a bit wider than the four equal columns, as in the design */
-      grid-template-columns: minmax(0, 1.17fr) repeat(4, minmax(0, 1fr));
-      grid-template-areas: 'logo nav nav nav social';
-      column-gap: var(--footer-gap);
-      row-gap: 2.5rem;
-      align-items: start;
-    }
-
-    .footer__logo {
-      grid-area: logo;
-      justify-content: flex-start;
-      padding: 0;
-      border: 0;
-    }
-
-    .footer-social {
-      grid-area: social;
-      align-items: flex-start;
-      padding: 0;
-      border: 0;
-    }
-
-    .footer-social__list {
-      justify-content: flex-start;
-    }
-
-    .footer-nav {
-      grid-area: nav;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--footer-gap);
-    }
-
-    .footer-nav__group {
-      border: 0;
-    }
-
-    .footer-nav__toggle,
-    .footer-nav__chevron {
-      display: none;
-    }
-
-    .footer-nav__title,
-    .footer-nav__title--editing {
-      display: block;
-      padding: 0;
-    }
-
-    /* Every group is always expanded outside the mobile accordion */
-    .footer-nav__panel,
-    .footer-nav__panel[data-state] {
-      display: block;
-      visibility: visible;
-      transition: none;
-    }
-
-    .footer-nav__panel-inner {
-      overflow: visible;
-    }
-
-    .footer-nav__links {
-      gap: 0.6rem;
-      padding: 1rem 0 0;
-    }
-
-    .footer__copyright {
-      font-size: 1.125rem;
-    }
-  }
-
-  /* ---------- Small desktop: fixed 145px logo, tighter columns, long words wrap instead of overflowing ---------- */
+  /* ---------- Small desktop: fixed 145px logo, tighter columns, long words wrap instead of overflowing.
+     Kept as a media query: 1220px is not a theme breakpoint and the range is inclusive. ---------- */
   @media (min-width: 992px) and (max-width: 1220px) {
     --footer-gap: 1.25rem;
 
     .footer__main {
-      grid-template-columns: 145px repeat(4, minmax(0, 1fr));
+      @apply grid-cols-[145px_repeat(4,minmax(0,1fr))];
     }
 
     .footer__logo-image {
-      width: 145px;
+      @apply w-[145px];
     }
 
     .footer-nav__heading,
     .footer-social__heading {
-      font-size: 0.9375rem;
+      @apply text-[0.9375rem] wrap-break-word;
     }
 
     .footer-nav__link {
-      font-size: 1rem;
-    }
-
-    .footer-nav__heading,
-    .footer-social__heading,
-    .footer-nav__link {
-      overflow-wrap: break-word;
+      @apply text-[1rem] wrap-break-word;
     }
   }
 }

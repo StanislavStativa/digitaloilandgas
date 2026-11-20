@@ -34,9 +34,6 @@ ul,
 ol {
   @apply py-[5px] ml-[10px];
 }
-li {
-  @apply text-font-normal ml-[15px];
-}
 ul {
   li {
     @apply list-disc list-inside;

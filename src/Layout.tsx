@@ -65,17 +65,17 @@ const Layout = ({ page, baseUrl: baseUrlProp }: LayoutProps): JSX.Element => {
             />
           )
         ) : (
-          <>
+          <div className="flex min-h-screen flex-col">
             <header>
               <div id="header">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-header" rendering={route} />}</div>
             </header>
-            <main>
+            <main className="flex-1">
               <div id="content">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-main" rendering={route} />}</div>
             </main>
             <footer>
               <div id="footer">{route && <AppPlaceholder page={page} componentMap={componentMap} name="headless-footer" rendering={route} />}</div>
             </footer>
-          </>
+          </div>
         )}
       </div>
     </>

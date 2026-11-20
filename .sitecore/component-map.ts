@@ -16,15 +16,18 @@ import * as Promo from 'src/components/promo/Promo';
 import * as PartialDesignDynamicPlaceholder from 'src/components/partial-design-dynamic-placeholder/PartialDesignDynamicPlaceholder';
 import * as PageContent from 'src/components/page-content/PageContent';
 import * as NavigationMenu from 'src/components/navigation/NavigationMenu';
+import * as Navigationutils from 'src/components/navigation/navigation.utils';
 import * as Navigation from 'src/components/navigation/Navigation';
 import * as LinkList from 'src/components/link-list/LinkList';
 import * as Link from 'src/components/link/Link';
 import * as IntroSection from 'src/components/intro-section/IntroSection';
-import * as InteractiveContentList from 'src/components/interactive-content-list/InteractiveContentList';
 import * as ImageSliderCarousel from 'src/components/image-slider/ImageSliderCarousel';
 import * as ImageSlider from 'src/components/image-slider/ImageSlider';
 import * as ImageMarquee from 'src/components/image-marquee/ImageMarquee';
 import * as Image from 'src/components/image/Image';
+import * as IconTextList from 'src/components/icon-text/IconTextList';
+import * as IconTextItem from 'src/components/icon-text/IconTextItem';
+import * as IconText from 'src/components/icon-text/IconText';
 import * as FooterNavigation from 'src/components/footer/FooterNavigation';
 import * as Footer from 'src/components/footer/Footer';
 import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
@@ -49,15 +52,18 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['PartialDesignDynamicPlaceholder', { ...PartialDesignDynamicPlaceholder }],
   ['PageContent', { ...PageContent }],
   ['NavigationMenu', { ...NavigationMenu, componentType: 'client' }],
+  ['navigation', { ...Navigationutils }],
   ['Navigation', { ...Navigation }],
   ['LinkList', { ...LinkList }],
   ['Link', { ...Link }],
   ['IntroSection', { ...IntroSection }],
-  ['InteractiveContentList', { ...InteractiveContentList }],
   ['ImageSliderCarousel', { ...ImageSliderCarousel, componentType: 'client' }],
   ['ImageSlider', { ...ImageSlider }],
   ['ImageMarquee', { ...ImageMarquee }],
   ['Image', { ...Image }],
+  ['IconTextList', { ...IconTextList }],
+  ['IconTextItem', { ...IconTextItem }],
+  ['IconText', { ...IconText }],
   ['FooterNavigation', { ...FooterNavigation, componentType: 'client' }],
   ['Footer', { ...Footer }],
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher, componentType: 'client' }],

@@ -43,6 +43,11 @@ h6 {
   font-weight: 400;
 }
 
+/* Skipped inside .text-text-white: this file is unlayered, so it would override the Tailwind utility. */
+:is(h1, h2, h3, h4, h5, h6):not(.text-text-white, .text-text-white *) {
+  color: var(--color-text-heading);
+}
+
 /* Typography scale (mobile-first, rem = 16px):         */
 /*         mobile  tablet (>=768px)  desktop (>=1024px)  */
 /* H1      32px    40px              60px                */

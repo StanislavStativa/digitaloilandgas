@@ -3,11 +3,11 @@
   --font-lato: var(--font-lato-next, 'Lato'), sans-serif;
   /* // abstract/vars /_colors: */
 
-  --color-main-color: #27272a;
+  --color-main-color: rgb(117, 107, 107);
 
   /* //Backgrounds colors */
   --color-bg-basic-color: #ffffff;
-  --color-bg-light-gray: #f7f7f7;
+  --color-bg-light-gray: rgb(251, 249, 249);
   --color-bg-lighter-gray: #fafafa;
   --color-bg-light-gray-active: #dadada;
   --color-bg-blue: #89c6cc;
@@ -21,6 +21,7 @@
   /* //Text colors */
   --color-text-white: #fff;
   --color-text-heading-color: #222;
+  --color-text-heading: #27272a;
   --color-text-basic: #747474;
   --color-text-basic-active: #878787;
   --color-text-blue: #89c6cc;

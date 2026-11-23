@@ -1,0 +1,123 @@
+/* component icon-text (Icon Text + Icon Text List share these styles) */
+
+/* The component's own width picks the sizes (container queries), so it adapts inside column
+   splitters and resizing Pages panels without a window resize. No background and no text colour:
+   both come from the parent container, so the component works on light and dark sections. */
+.icon-text-component {
+  @apply @container/icon-text w-full min-w-0;
+}
+
+.icon-text {
+  --it-icon-size: 2.5rem;
+  --it-gap: 0.75rem;
+  --it-title-size: 1.75rem;
+  --it-description-gap: 1rem;
+
+  @apply min-w-0 text-inherit wrap-break-word;
+}
+
+.icon-text__icon {
+  @apply block size-(--it-icon-size) flex-none;
+
+  img {
+    @apply block h-full w-full max-w-none object-contain;
+  }
+}
+
+.icon-text__title {
+  @apply m-0 min-w-0 font-poppins font-bold text-inherit;
+}
+
+.icon-text__description {
+  @apply font-lato text-base leading-[1.6] text-inherit;
+
+  p {
+    @apply my-2;
+  }
+
+  > :first-child {
+    @apply mt-0;
+  }
+
+  > :last-child {
+    @apply mb-0;
+  }
+}
+
+/* ================= Default: [icon  Large title], description below the row ================= */
+
+.icon-text--default {
+  .icon-text__heading {
+    @apply flex items-center gap-(--it-gap);
+  }
+
+  .icon-text__title {
+    @apply text-(length:--it-title-size) leading-tight;
+  }
+
+  .icon-text__description {
+    @apply mt-(--it-description-gap);
+  }
+}
+
+@container icon-text (min-width: 32rem) {
+  .icon-text--default {
+    --it-icon-size: 3rem;
+    --it-gap: 0.75rem;
+    --it-title-size: 2.25rem;
+    --it-description-gap: 1.25rem;
+  }
+}
+
+/* ================= Feature: icon left, title + description stacked right ================= */
+
+.icon-text--feature {
+  --it-icon-size: 2.25rem;
+  --it-gap: 1rem;
+
+  @apply flex items-center gap-(--it-gap);
+
+  .icon-text__content {
+    @apply min-w-0 flex-1;
+  }
+
+  .icon-text__title {
+    @apply text-lg leading-snug;
+  }
+
+  /* Slightly muted, still derived from the inherited colour */
+  .icon-text__description {
+    @apply mt-1 text-[color-mix(in_srgb,currentColor_82%,transparent)];
+  }
+}
+
+@container icon-text (min-width: 28rem) {
+  .icon-text--feature {
+    --it-icon-size: 3rem;
+    --it-gap: 1.5rem;
+  }
+}
+
+/* ================= Icon Text List: vertical stack, the list only owns the spacing ================= */
+
+.icon-text-list {
+  @apply m-0 grid list-none grid-cols-[minmax(0,1fr)] p-0;
+
+  > li {
+    @apply m-0 p-0;
+  }
+}
+
+.icon-text-list--default {
+  @apply gap-10;
+}
+
+.icon-text-list--feature {
+  @apply gap-8;
+}
+
+@container icon-text (min-width: 32rem) {
+  .icon-text-list--feature {
+    @apply gap-10;
+  }
+}

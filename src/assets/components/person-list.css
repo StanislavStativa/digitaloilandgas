@@ -1,0 +1,114 @@
+/* component person-list (Person List rendering + its PersonCard) */
+
+/* The wrapper and the grid are transparent on purpose: the section background belongs to the
+   parent container and must show through the gaps. Only .person-card has a background.
+   Columns follow the component's own width (container query), so a narrow column splitter
+   gets one column on a wide screen, and Pages panels resize without a reload. */
+.person-list-component {
+  @apply @container/person-list w-full min-w-0;
+}
+
+.person-list {
+  @apply m-0 grid list-none grid-cols-[minmax(0,1fr)] gap-6 p-0;
+}
+
+@container person-list (min-width: 44rem) {
+  .person-list {
+    @apply grid-cols-2 gap-10;
+  }
+}
+
+@container person-list (min-width: 72rem) {
+  .person-list {
+    @apply gap-15;
+  }
+}
+
+/* ================= Card ================= */
+
+/* Grid items stretch, so cards in one row share the tallest card's height;
+   the LinkedIn badge is pushed to the bottom of each card (margin-top: auto). */
+.person-card {
+  --person-card-bg: #ebe6e6;
+  --person-card-ink: #2f2828;
+
+  @apply @container/person-card m-0 flex min-w-0 flex-col rounded-xl bg-(--person-card-bg) p-5 wrap-break-word;
+}
+
+/* Padding can't follow the card's own width (an element can't query itself), so it follows the list */
+@container person-list (min-width: 26rem) {
+  .person-card {
+    @apply p-6;
+  }
+}
+
+/* Everything inside the card scales with the card's content width */
+.person-card__header {
+  @apply flex items-center gap-4;
+}
+
+.person-card__photo {
+  @apply block size-16 flex-none overflow-hidden rounded-full;
+
+  img {
+    @apply block h-full w-full max-w-none object-cover;
+  }
+}
+
+@container person-card (min-width: 20rem) {
+  .person-card__photo {
+    @apply size-20;
+  }
+}
+
+@container person-card (min-width: 24rem) {
+  .person-card__header {
+    @apply gap-5;
+  }
+}
+
+.person-card__heading {
+  @apply min-w-0 flex-1;
+}
+
+/* Two classes: beats the unlayered `:is(h1…h6):not(.text-text-white …)` colour rule and the
+   global h3 sizes from app.css, and the global `p { margin }` from base.css. */
+.person-card .person-card__name {
+  @apply m-0 font-poppins text-2xl leading-tight font-semibold text-(--person-card-ink);
+}
+
+@container person-card (min-width: 24rem) {
+  .person-card .person-card__name {
+    @apply text-[2rem];
+  }
+}
+
+.person-card .person-card__position {
+  @apply m-0 font-lato leading-snug text-(--person-card-ink);
+}
+
+.person-card .person-card__description {
+  @apply mt-5 font-lato leading-[1.5] text-main-color;
+
+  p {
+    @apply my-0;
+  }
+
+  p + p,
+  ul,
+  ol {
+    @apply mt-3;
+  }
+}
+
+.person-card__social {
+  @apply mt-auto flex pt-5;
+}
+
+.person-card__linkedin {
+  @apply inline-flex rounded-sm transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--person-card-ink);
+}
+
+.person-card__linkedin-icon {
+  @apply block size-8;
+}

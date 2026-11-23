@@ -1,13 +1,14 @@
 import { getDatasource, getFieldValue } from 'lib/component-props';
+import { hasFieldText, hasImageSrc } from 'lib/field-utils';
 import { cn, normalizeId } from 'lib/utils';
 import { FC } from 'react';
 import { ICON_TEXT_ITEM_TEMPLATE_ID, IconTextListItem, IconTextListProps, IconTextVariant } from './IconText.props';
-import { hasIconTextImage, hasIconTextValue, IconTextItem } from './IconTextItem';
+import { IconTextItem } from './IconTextItem';
 
 /** Only Icon Text Item children; a query without `template` keeps everything */
 const isIconTextItem = (item: IconTextListItem) => !item.template?.id || normalizeId(item.template.id) === normalizeId(ICON_TEXT_ITEM_TEMPLATE_ID);
 
-const hasContent = (item: IconTextListItem) => hasIconTextValue(getFieldValue(item.title)) || hasIconTextImage(getFieldValue(item.icon));
+const hasContent = (item: IconTextListItem) => hasFieldText(item.title) || hasImageSrc(item.icon);
 
 const IconTextListRendering: FC<IconTextListProps & { variant: IconTextVariant }> = ({ fields, params, page, variant }) => {
   const { styles, RenderingIdentifier: id } = params;

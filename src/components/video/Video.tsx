@@ -1,6 +1,7 @@
 import { getFieldValue } from 'lib/component-props';
+import { hasImageSrc } from 'lib/field-utils';
 import { cn } from 'lib/utils';
-import { Image as ContentSdkImage, ImageField } from '@sitecore-content-sdk/nextjs';
+import { Image as ContentSdkImage } from '@sitecore-content-sdk/nextjs';
 import { FC } from 'react';
 import { ResolvedVideo, VideoFields, VideoProps, VideoWrapperProps } from './Video.props';
 import { VideoPlayer } from './VideoPlayer';
@@ -23,8 +24,6 @@ const resolveVideo = (field: VideoFields['VideoFile']): ResolvedVideo | undefine
   return { src, mimeType: mimeType || undefined, name: asString(value?.displayName) || asString(value?.title) || undefined };
 };
 
-const hasImage = (field?: ImageField) => Boolean(field?.value?.src);
-
 const VideoWrapper: FC<VideoWrapperProps> = ({ id, styles, isEditing, children }) => (
   <div id={id} className={cn('component video-component', isEditing && 'is-editing', styles)}>
     <div className="component-content">{children}</div>
@@ -37,7 +36,7 @@ export const Default: FC<VideoProps> = ({ fields, params, page }) => {
 
   const video = resolveVideo(fields?.VideoFile);
   const posterField = getFieldValue(fields?.PosterImage);
-  const poster = hasImage(posterField) ? <ContentSdkImage field={posterField} decoding="async" /> : null;
+  const poster = hasImageSrc(posterField) ? <ContentSdkImage field={posterField} decoding="async" /> : null;
 
   // Pages: the poster is the stable, editable stand-in; no playback while editing
   if (isEditing) {

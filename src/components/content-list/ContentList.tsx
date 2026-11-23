@@ -1,15 +1,11 @@
 import { getDatasource, getFieldValue } from 'lib/component-props';
+import { fieldText, hasFieldText, hasImageSrc, hasLinkHref } from 'lib/field-utils';
 import { cn } from 'lib/utils';
 import { CompatibleLink } from 'components/content-sdk/CompatibleLink';
 import { Image as ContentSdkImage, RichText, Text } from '@sitecore-content-sdk/nextjs';
 import { FC, ReactNode } from 'react';
 import { ContentListItem, ContentListProps, InteractiveContentEntry } from './ContentList.props';
 import { InteractiveContentSwitcher } from './InteractiveContentSwitcher';
-
-const hasImage = (item: ContentListItem) => Boolean(getFieldValue(item.image)?.value?.src);
-const hasLink = (item: ContentListItem) => Boolean(getFieldValue(item.ctaLink)?.value?.href);
-const hasDescription = (item: ContentListItem) => Boolean(getFieldValue(item.description)?.value);
-const titleText = (item: ContentListItem) => String(getFieldValue(item.title)?.value ?? '').trim();
 
 /** React key: falls back to the position if the ComponentQuery doesn't select `id` */
 const itemKey = (item: ContentListItem, i: number) => item.id || `item-${i}`;
@@ -19,7 +15,7 @@ const renderBody = (item: ContentListItem, isEditing: boolean, block: string) =>
   const link = getFieldValue(item.ctaLink);
   return (
     <>
-      {(isEditing || hasDescription(item)) && <RichText field={getFieldValue(item.description)} className={`${block}__description`} />}
+      {(isEditing || hasFieldText(item.description)) && <RichText field={getFieldValue(item.description)} className={`${block}__description`} />}
       {/* No empty anchor on the live site; in Pages the empty field stays editable. If the query returns no
           ctaLink at all there is no field metadata to edit inline, so tell the editor instead of rendering nothing */}
       {isEditing ? (
@@ -28,7 +24,7 @@ const renderBody = (item: ContentListItem, isEditing: boolean, block: string) =>
         </div>
       ) : (
         link &&
-        hasLink(item) && (
+        hasLinkHref(link) && (
           <div className={`${block}__cta`}>
             <CompatibleLink field={link} />
           </div>
@@ -39,7 +35,7 @@ const renderBody = (item: ContentListItem, isEditing: boolean, block: string) =>
 };
 
 const renderImage = (item: ContentListItem, i: number, isEditing: boolean, loading: 'eager' | 'lazy') =>
-  hasImage(item) ? (
+  hasImageSrc(item.image) ? (
     <ContentSdkImage field={getFieldValue(item.image)} loading={loading} />
   ) : isEditing ? (
     <>
@@ -62,7 +58,7 @@ const ContentListShell: FC<ContentListShellProps> = ({ props: { fields, params, 
 
   const datasource = getDatasource(fields);
   // Live site: an item needs at least a title or an image to be worth a card. Pages: keep every item editable.
-  const items = (datasource?.items?.results ?? []).filter((item) => item && (isEditing || titleText(item) || hasImage(item)));
+  const items = (datasource?.items?.results ?? []).filter((item) => item && (isEditing || fieldText(item.title) || hasImageSrc(item.image)));
 
   if (!items.length && !isEditing) return null;
 
@@ -76,9 +72,7 @@ const ContentListShell: FC<ContentListShellProps> = ({ props: { fields, params, 
           children(items, isEditing)
         ) : (
           <span className="is-empty-hint">
-            {datasource?.items
-              ? 'Content List: add Content List Item children to the datasource'
-              : 'Content List: select or create a datasource'}
+            {datasource?.items ? 'Content List: add Content List Item children to the datasource' : 'Content List: select or create a datasource'}
           </span>
         )}
       </div>
@@ -93,11 +87,9 @@ export const Default: FC<ContentListProps> = (props) => (
       <div className="content-list" role="list">
         {items.map((item, i) => (
           <div key={itemKey(item, i)} role="listitem" className="content-list__card">
-            {(isEditing || hasImage(item)) && (
-              <div className="content-list__image">{renderImage(item, i, isEditing, 'lazy')}</div>
-            )}
+            {(isEditing || hasImageSrc(item.image)) && <div className="content-list__image">{renderImage(item, i, isEditing, 'lazy')}</div>}
             {/* Image-only items on the live site: no empty heading */}
-            {(isEditing || titleText(item)) && (
+            {(isEditing || fieldText(item.title)) && (
               <h4 className="content-list__title">
                 <Text field={getFieldValue(item.title)} />
               </h4>
@@ -116,7 +108,7 @@ export const Interactive: FC<ContentListProps> = (props) => (
     {(items, isEditing) => {
       const entries: InteractiveContentEntry[] = items.map((item, i) => ({
         id: itemKey(item, i),
-        label: titleText(item) || `Item ${i + 1}`,
+        label: fieldText(item.title) || `Item ${i + 1}`,
         title: <Text field={getFieldValue(item.title)} />,
         body: renderBody(item, isEditing, 'interactive-content-list'),
         // The first image is visible on load; the others sit in the same (on-screen) box, so lazy still loads them early

@@ -1,7 +1,8 @@
-import { GraphQLImageField, getDatasource, getFieldValue } from 'lib/component-props';
+import { getDatasource, getFieldValue } from 'lib/component-props';
+import { fieldText, hasFieldText, hasImageSrc, hasLinkHref, linkRel } from 'lib/field-utils';
 import { cn, normalizeId } from 'lib/utils';
 import { CompatibleLink } from 'components/content-sdk/CompatibleLink';
-import { Image as ContentSdkImage, LinkField, Text } from '@sitecore-content-sdk/nextjs';
+import { Image as ContentSdkImage, Text } from '@sitecore-content-sdk/nextjs';
 import { FC } from 'react';
 import {
   FOOTER_TEMPLATE_IDS,
@@ -13,18 +14,11 @@ import {
 } from './Footer.props';
 import { FooterNavigation } from './FooterNavigation';
 
-const textOf = (field: { jsonValue?: { value?: unknown } } | null | undefined) => String(getFieldValue(field)?.value ?? '').trim();
-const hrefOf = (link: LinkField | undefined) => String(link?.value?.href ?? '').trim();
-const hasImage = (field: GraphQLImageField | null | undefined) => Boolean(getFieldValue(field)?.value?.src);
-
 const isTemplate = (section: FooterSection, templateId: string) => normalizeId(section.template?.id) === normalizeId(templateId);
-
-/** New-tab links get rel="noopener noreferrer" (CompatibleLink's Next.js branch doesn't add it) */
-const relFor = (link: LinkField | undefined) => (link?.value?.target === '_blank' ? 'noopener noreferrer' : undefined);
 
 const NavigationLinks: FC<FooterNavigationLinksProps> = ({ links, isEditing }) => {
   // Live site: skip links without a destination. Pages: keep every item editable.
-  const visible = links.filter((item) => isEditing || hrefOf(getFieldValue(item.link)));
+  const visible = links.filter((item) => isEditing || hasLinkHref(item.link));
   if (!visible.length) {
     return isEditing ? <span className="is-empty-hint">Add Footer Navigation Link items to this group</span> : null;
   }
@@ -35,7 +29,7 @@ const NavigationLinks: FC<FooterNavigationLinksProps> = ({ links, isEditing }) =
         const link = getFieldValue(item.link);
         return (
           <li key={item.id} className="footer-nav__item">
-            {link && <CompatibleLink field={link} className="footer-nav__link" rel={relFor(link)} />}
+            {link && <CompatibleLink field={link} className="footer-nav__link" rel={linkRel(link)} />}
           </li>
         );
       })}
@@ -50,7 +44,7 @@ const NavigationLinks: FC<FooterNavigationLinksProps> = ({ links, isEditing }) =
  */
 const hasTitleLink = (group: FooterSection, isEditing: boolean) => {
   const link = getFieldValue(group.titleLink);
-  return Boolean(link) && (isEditing || Boolean(hrefOf(link)));
+  return Boolean(link) && (isEditing || hasLinkHref(link));
 };
 
 const GroupTitleLink: FC<{ group: FooterSection; isEditing: boolean }> = ({ group, isEditing }) => {
@@ -66,21 +60,19 @@ const GroupTitleLink: FC<{ group: FooterSection; isEditing: boolean }> = ({ grou
   }
 
   return (
-    <CompatibleLink field={link} className="footer-nav__title-link" rel={relFor(link)}>
-      {textOf(group.title)}
+    <CompatibleLink field={link} className="footer-nav__title-link" rel={linkRel(link)}>
+      {fieldText(group.title)}
     </CompatibleLink>
   );
 };
 
 const SocialLink: FC<FooterSocialLinkProps> = ({ item, isEditing }) => {
   const link = getFieldValue(item.link);
-  const label = textOf(item.accessibleLabel) || String(link?.value?.text ?? '').trim() || undefined;
+  const label = fieldText(item.accessibleLabel) || String(link?.value?.text ?? '').trim() || undefined;
   // The link carries the accessible name, so the icon itself is decorative.
   // width/height come from the media item, so the browser reserves the icon's real aspect ratio.
   const icon =
-    isEditing || hasImage(item.icon) ? (
-      <ContentSdkImage field={getFieldValue(item.icon)} alt="" className="footer-social__icon" />
-    ) : null;
+    isEditing || hasImageSrc(item.icon) ? <ContentSdkImage field={getFieldValue(item.icon)} alt="" className="footer-social__icon" /> : null;
 
   if (isEditing) {
     // Every field editable on its own: icon, link, label
@@ -102,7 +94,7 @@ const SocialLink: FC<FooterSocialLinkProps> = ({ item, isEditing }) => {
 
   return (
     <li className="footer-social__item">
-      <CompatibleLink field={link} className="footer-social__link" aria-label={label} title={label} rel={relFor(link)}>
+      <CompatibleLink field={link} className="footer-social__link" aria-label={label} title={label} rel={linkRel(link)}>
         {icon}
       </CompatibleLink>
     </li>
@@ -112,20 +104,16 @@ const SocialLink: FC<FooterSocialLinkProps> = ({ item, isEditing }) => {
 export const Default: FC<FooterProps> = ({ fields, params, page }) => {
   const { styles, RenderingIdentifier: id } = params;
   const isEditing = Boolean(page?.mode?.isEditing);
-  const resolved = getDatasource(fields);
-  // No datasource: Integrated GraphQL sends { data: { datasource: null } }, which getDatasource hands back as is
-  const datasource = resolved && ['logo', 'copyright', 'socialHeading', 'sections'].some((key) => key in resolved) ? resolved : undefined;
+  const datasource = getDatasource(fields);
 
   if (!datasource && !isEditing) return null;
 
   const sections = (datasource?.sections?.results ?? []).filter(Boolean);
-  const groups = sections.filter(
-    (section) => isTemplate(section, FOOTER_TEMPLATE_IDS.navigationGroup) && (isEditing || Boolean(textOf(section.title))),
-  );
+  const groups = sections.filter((section) => isTemplate(section, FOOTER_TEMPLATE_IDS.navigationGroup) && (isEditing || hasFieldText(section.title)));
   const socialLinks = sections
     .filter((section) => isTemplate(section, FOOTER_TEMPLATE_IDS.socialLinks))
     .flatMap((folder) => folder.items?.results ?? [])
-    .filter((item) => item && (isEditing || (hrefOf(getFieldValue(item.link)) && hasImage(item.icon))));
+    .filter((item) => item && (isEditing || (hasLinkHref(item.link) && hasImageSrc(item.icon))));
 
   const entries: FooterNavigationEntry[] = groups.map((group) => ({
     id: group.id,
@@ -134,9 +122,9 @@ export const Default: FC<FooterProps> = ({ fields, params, page }) => {
     links: <NavigationLinks links={group.items?.results ?? []} isEditing={isEditing} />,
   }));
 
-  const showLogo = isEditing || hasImage(datasource?.logo);
+  const showLogo = isEditing || hasImageSrc(datasource?.logo);
   const showSocial = isEditing || socialLinks.length > 0;
-  const showCopyright = isEditing || Boolean(textOf(datasource?.copyright));
+  const showCopyright = isEditing || hasFieldText(datasource?.copyright);
 
   return (
     <div id={typeof id === 'string' ? id : undefined} className={cn('component footer-component', isEditing && 'is-editing', styles)}>
@@ -160,7 +148,7 @@ export const Default: FC<FooterProps> = ({ fields, params, page }) => {
 
               {showSocial && (
                 <div className="footer-social">
-                  {(isEditing || textOf(datasource.socialHeading)) && (
+                  {(isEditing || fieldText(datasource.socialHeading)) && (
                     <Text field={getFieldValue(datasource.socialHeading)} tag="h2" className="footer-social__heading" />
                   )}
                   {socialLinks.length > 0 ? (

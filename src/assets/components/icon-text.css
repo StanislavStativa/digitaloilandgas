@@ -30,18 +30,12 @@
 
 .icon-text__description {
   @apply font-lato text-base leading-[1.6] text-inherit;
+}
 
-  p {
-    @apply my-2;
-  }
-
-  > :first-child {
-    @apply mt-0;
-  }
-
-  > :last-child {
-    @apply mb-0;
-  }
+/* No paragraph margins. Scoped under .icon-text so it beats `.rich-text p` (rich-text.css loads later)
+   and the global `p { margin: 5px 0 }` from base.css. */
+.icon-text .icon-text__description p {
+  @apply my-0;
 }
 
 /* ================= Default: [icon  Large title], description below the row ================= */
@@ -87,7 +81,12 @@
 
   /* Slightly muted, still derived from the inherited colour */
   .icon-text__description {
-    @apply mt-1 text-[color-mix(in_srgb,currentColor_82%,transparent)];
+    @apply mt-1 text-[18px] text-[color-mix(in_srgb,currentColor_82%,transparent)];
+  }
+
+  /* On a white-text (dark) section the design uses a fixed light grey */
+  .text-text-white & .icon-text__description {
+    @apply text-[rgb(199,193,193)];
   }
 }
 
@@ -120,4 +119,11 @@
   .icon-text-list--feature {
     @apply gap-10;
   }
+}
+
+/* Columns: SXA style folder "Icon Text List columns" puts the class on the rendering wrapper.
+   "1 column" (icon-text-list-cols-1) is the default layout and needs no rule.
+   "2 columns": two equal columns above 768px, one column at 768px and below. */
+.icon-text-list-cols-2 .icon-text-list {
+  @apply min-[769px]:grid-cols-2 min-[769px]:gap-x-8;
 }

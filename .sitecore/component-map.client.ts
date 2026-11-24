@@ -13,6 +13,7 @@ import * as FooterNavigation from 'src/components/footer/FooterNavigation';
 import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as CountUp from 'src/components/company-statistics/CountUp';
+import * as BlogListing from 'src/components/blog-list/BlogListing';
 
 export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCClientWrapper],
@@ -25,6 +26,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher }],
   ['ContentBlock', { ...ContentBlock }],
   ['CountUp', { ...CountUp }],
+  ['BlogListing', { ...BlogListing }],
 ]);
 
 export default componentMap;

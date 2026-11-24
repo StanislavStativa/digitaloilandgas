@@ -1,0 +1,259 @@
+/* component blog-list */
+
+/* Layout follows the component's own width (container queries), like content-list,
+   so it adapts inside column splitters and Pages panels. 1 → 2 → 3 columns. */
+.blog-list-component {
+  --bl-color: var(--color-text-heading-color);
+  --bl-muted: var(--color-text-basic);
+  --bl-meta: var(--bl-muted);
+  --bl-focus: var(--color-main-color);
+  --bl-image-height: 10rem;
+  --bl-radius: 0.375rem;
+  --bl-gap: 2rem;
+
+  /* Sitecore styles like "indent" add side margins. Bootstrap's `.row > *` sets width: 100% and
+     flex-shrink: 0, so the margins pushed it past the page edge. In a flex .row, basis-full + shrink
+     fits the margins; in a block parent, width: auto does. */
+  @apply @container/blog-list w-auto min-w-0 shrink basis-full text-(--bl-color);
+}
+
+/* "text-text-white" rendering style for dark sections (the home page section is dark) */
+.blog-list-component.text-text-white {
+  --bl-color: var(--color-text-white);
+  --bl-muted: #c7c1c1;
+  --bl-meta: #9c9292;
+  --bl-focus: var(--color-text-white);
+}
+
+.blog-list {
+  @apply m-0 grid list-none grid-cols-[minmax(0,1fr)] gap-(--bl-gap) p-0;
+  @apply @3xl/blog-list:grid-cols-2 @3xl/blog-list:gap-14;
+  @apply @6xl/blog-list:grid-cols-3;
+}
+
+.blog-list__item {
+  @apply m-0 min-w-0 p-0;
+}
+
+/* ================= Card ================= */
+
+.blog-card {
+  @apply block h-full rounded-(--bl-radius) text-inherit no-underline;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--bl-focus);
+
+  &:hover,
+  &:focus-visible {
+    @apply text-inherit no-underline;
+  }
+}
+
+.blog-card__inner {
+  @apply flex h-full flex-col overflow-hidden rounded-(--bl-radius);
+}
+
+.blog-card__image {
+  @apply h-(--bl-image-height) flex-none overflow-hidden rounded-(--bl-radius);
+
+  img {
+    @apply block h-full w-full max-w-none object-cover object-center;
+    @apply transition-transform duration-300 ease-out motion-reduce:transition-none;
+  }
+}
+
+.blog-card:hover .blog-card__image img,
+.blog-card:focus-visible .blog-card__image img {
+  @apply scale-105;
+}
+
+.blog-card__body {
+  @apply flex flex-1 flex-col;
+}
+
+.blog-card__title {
+  /* Sizes as on the old site: 18 → 20 → 24px title, 16 → 17 → 18px text */
+  @apply mt-2 mb-2 text-lg leading-[1.375rem] font-normal text-inherit;
+  @apply md:text-xl md:leading-6 desktop:text-2xl desktop:leading-[1.813rem];
+}
+
+.blog-card:hover .blog-card__title {
+  @apply underline underline-offset-4;
+}
+
+.blog-card__summary,
+.blog-card__meta {
+  @apply text-base leading-6 md:text-[1.063rem] md:leading-[1.625rem] desktop:text-lg desktop:leading-[1.688rem];
+}
+
+.blog-card__summary {
+  @apply mt-0 mb-2 text-(--bl-muted);
+}
+
+/* Pinned to the bottom so dates line up across a row */
+.blog-card__meta {
+  @apply mt-auto flex items-center justify-between gap-4 text-(--bl-meta);
+}
+
+.blog-card__reading-time {
+  @apply ml-auto inline-flex items-center gap-1;
+
+  svg {
+    @apply size-5 flex-none;
+  }
+}
+
+.blog-list__view-all {
+  @apply mt-8;
+
+  a {
+    @apply inline-block font-bold text-inherit uppercase underline decoration-2 underline-offset-[0.5rem];
+    @apply hover:text-inherit hover:opacity-80;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--bl-focus);
+  }
+}
+
+.blog-list-component .is-empty-hint {
+  @apply mb-4 block text-(--bl-muted) italic;
+}
+
+/* ================= Listing variant ================= */
+
+.blog-list-component--listing {
+  --bl-color: #2f2828;
+  --bl-muted: #756b6b;
+  --bl-meta: #9c9292;
+  --bl-tab: #c7c1c1;
+  --bl-accent: #ff2b1e;
+  --bl-accent-text: var(--color-text-white);
+  --bl-border: var(--color-border-gray);
+  --bl-step-bg: #c7c1c1;
+  --bl-page-bg: #756b6b;
+  --bl-search-bg: var(--color-bg-dark-gray);
+}
+
+/* Sidebar first in the DOM (search before results), on the right from @3xl (1/5 : 4/5 as on the old site) */
+.blog-listing {
+  @apply flex flex-col gap-10;
+  @apply @3xl/blog-list:flex-row-reverse @3xl/blog-list:items-start;
+}
+
+.blog-listing__sidebar {
+  @apply flex flex-col gap-4;
+  @apply @3xl/blog-list:w-1/5 @3xl/blog-list:min-w-52 @3xl/blog-list:flex-none;
+}
+
+/* The card grid follows the width of the results column, not of the whole component */
+.blog-listing__main {
+  @apply @container/blog-list min-w-0 flex-1;
+}
+
+/* Results column: 1 → 2 columns, never 3 (the sidebar takes the room) */
+.blog-listing .blog-list {
+  @apply gap-6 @md/blog-list:grid-cols-2 @6xl/blog-list:grid-cols-2;
+}
+
+/* Date on its own line, reading time below, as on the old listing */
+.blog-listing .blog-card__meta {
+  @apply flex-col items-start gap-0;
+}
+
+.blog-listing .blog-card__reading-time {
+  @apply ml-0;
+}
+
+.blog-listing__search {
+  @apply relative flex items-center rounded-xl bg-(--bl-search-bg) bg-cover bg-center px-4 py-5;
+}
+
+.blog-listing__search-input {
+  @apply w-full rounded-lg border border-(--bl-border) bg-white py-2.5 pr-12 pl-4 text-(--color-text-heading-color);
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-(--bl-accent);
+
+  &::-webkit-search-cancel-button {
+    @apply cursor-pointer;
+  }
+}
+
+.blog-listing__search-button {
+  @apply absolute top-1/2 right-5 flex size-8 -translate-y-1/2 items-center justify-center rounded-md;
+  @apply cursor-pointer border-0 bg-(--bl-accent) text-(--bl-accent-text);
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--bl-focus);
+}
+
+.blog-listing__categories ul {
+  @apply m-0 flex list-none flex-col gap-1 p-0 px-2;
+}
+
+.blog-listing__categories a {
+  @apply inline-block py-2 text-sm leading-[1.375rem] font-bold tracking-wide text-(--bl-tab) uppercase no-underline transition-colors;
+  @apply md:text-[0.938rem] md:leading-[1.438rem] desktop:text-base desktop:leading-6;
+  @apply hover:text-(--bl-color) hover:no-underline;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--bl-focus);
+
+  &[aria-current] {
+    @apply text-(--bl-color) underline underline-offset-4;
+  }
+}
+
+.blog-listing__results {
+  @apply transition-opacity duration-200 outline-none motion-reduce:transition-none;
+
+  &.is-loading {
+    @apply opacity-50;
+  }
+}
+
+.blog-listing__empty {
+  @apply py-12 text-center text-(--bl-muted);
+}
+
+.blog-listing__sr-only {
+  @apply sr-only;
+}
+
+/* ================= Pagination ================= */
+
+.blog-pagination {
+  @apply mt-12 flex justify-center;
+
+  ul {
+    @apply m-0 flex list-none flex-wrap items-center justify-center gap-3 p-0 @md/blog-list:gap-5;
+  }
+}
+
+.blog-pagination__page,
+.blog-pagination__step {
+  @apply flex size-9 items-center justify-center rounded-md text-sm no-underline;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--bl-focus);
+}
+
+.blog-pagination__page {
+  @apply bg-(--bl-page-bg) text-white shadow-sm hover:bg-(--bl-color) hover:text-white hover:no-underline;
+
+  &[aria-current='page'] {
+    @apply bg-(--bl-accent) text-(--bl-accent-text) hover:bg-(--bl-accent) hover:text-(--bl-accent-text);
+  }
+}
+
+.blog-pagination__step {
+  @apply bg-(--bl-step-bg) text-white shadow-sm hover:text-white;
+
+  svg {
+    @apply h-3.5 w-auto;
+  }
+
+  &[aria-hidden='true'] {
+    @apply opacity-40;
+  }
+}
+
+a.blog-pagination__step:hover {
+  @apply bg-(--bl-muted);
+}
+
+.blog-pagination__step--next svg {
+  @apply -scale-x-100;
+}
+
+.blog-pagination__gap {
+  @apply flex size-9 items-center justify-center text-(--bl-muted);
+}

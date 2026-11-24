@@ -34,6 +34,9 @@ import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
 import * as CompanyStatistics from 'src/components/company-statistics/CompanyStatistics';
 import * as ColumnSplitter from 'src/components/column-splitter/ColumnSplitter';
+import * as BlogListing from 'src/components/blog-list/BlogListing';
+import * as BlogList from 'src/components/blog-list/BlogList';
+import * as BlogCard from 'src/components/blog-list/BlogCard';
 
 export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCServerWrapper],
@@ -67,6 +70,9 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['CountUp', { ...CountUp, componentType: 'client' }],
   ['CompanyStatistics', { ...CompanyStatistics }],
   ['ColumnSplitter', { ...ColumnSplitter }],
+  ['BlogListing', { ...BlogListing, componentType: 'client' }],
+  ['BlogList', { ...BlogList }],
+  ['BlogCard', { ...BlogCard }],
 ]);
 
 export default componentMap;

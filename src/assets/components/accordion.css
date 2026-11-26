@@ -1,0 +1,199 @@
+/* component accordion (Accordion rendering; Default and FAQ variants share the markup and the state) */
+
+/* No background: the section colour comes from the parent container and shows through.
+   Text colours are fixed per variant, as in the design: Default is light text for dark sections,
+   FAQ is dark text for light sections (see the variant blocks below).
+   Sizes follow the browser window (media queries), as in the design:
+   mobile < 768px ≤ tablet ≤ 1024px < desktop. */
+.accordion-component {
+  @apply w-full min-w-0;
+}
+
+.accordion {
+  --acc-accent: #ff2a1f;
+  --acc-separator: rgb(255 163 157);
+  --acc-duration: 250ms;
+  /* Title and description share one size: 16px (mobile) → 17px (tablet) → 18px (desktop) */
+  --acc-font-size: 1rem;
+  --acc-row-padding: 0.625rem;
+  --acc-gap: 0.75rem;
+  --acc-icon-size: 1.5rem;
+  --acc-control-size: 1.5rem;
+  /* Description offset: under the title (Default) or flush left (FAQ) */
+  --acc-indent: calc(var(--acc-icon-size) + var(--acc-gap));
+  --acc-text-end: 0px;
+
+  @apply m-0 min-w-0 border-t border-(color:--acc-separator) p-0;
+
+  &.accordion--faq {
+    --acc-row-padding: 1.37rem;
+  }
+}
+
+/* Tablet: 768–1024px */
+@media (width >= 768px) {
+  .accordion {
+    --acc-font-size: 1.0625rem;
+    --acc-gap: 0.875rem;
+    --acc-row-padding: 1rem;
+
+    &.accordion--faq {
+      --acc-row-padding: 1.37rem;
+    }
+  }
+}
+
+/* Desktop: above 1024px */
+@media (width > 1024px) {
+  .accordion {
+    --acc-font-size: 1.125rem;
+    --acc-row-padding: 1.125rem;
+    --acc-gap: 1rem;
+
+    &.accordion--faq {
+      --acc-row-padding: 1.37rem;
+    }
+  }
+}
+
+.accordion__item {
+  @apply min-w-0 border-b border-(color:--acc-separator);
+}
+
+/* Two classes: beat the global h3 size/margin/colour rules (app.css, base.css) */
+.accordion .accordion__heading {
+  @apply m-0 font-poppins text-(length:--acc-font-size) leading-[1.35] font-semibold text-(--acc-title-color);
+}
+
+/* The heading row; a button when the item can be toggled, a span otherwise (Pages, no description) */
+.accordion__trigger {
+  @apply m-0 flex w-full min-w-0 items-center gap-(--acc-gap) border-0 bg-transparent px-0 py-(--acc-row-padding) text-left text-inherit [font:inherit] [letter-spacing:inherit];
+}
+
+button.accordion__trigger {
+  @apply cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current;
+}
+
+.accordion__title {
+  @apply min-w-0 flex-1 wrap-break-word;
+}
+
+.accordion__check {
+  @apply block size-(--acc-icon-size) flex-none text-(--acc-accent);
+}
+
+/* ---------- Panel: height animates via grid rows; closed panels are hidden from focus and AT ---------- */
+
+.accordion__panel {
+  @apply invisible grid grid-rows-[0fr] [transition:grid-template-rows_var(--acc-duration)_ease,visibility_0s_linear_var(--acc-duration)] motion-reduce:transition-none;
+
+  &[data-state='open'] {
+    @apply visible grid-rows-[1fr] [transition:grid-template-rows_var(--acc-duration)_ease,visibility_0s_linear_0s] motion-reduce:transition-none;
+  }
+}
+
+.accordion__panel-inner {
+  @apply min-h-0 overflow-hidden;
+}
+
+/* Two classes: beat `p { margin }` and the list rules from base.css / app.css */
+.accordion .accordion__description {
+  @apply pr-(--acc-text-end) pb-(--acc-row-padding) pl-(--acc-indent) font-lato text-(length:--acc-font-size) leading-[1.6] wrap-break-word text-(--acc-text-color);
+
+  p,
+  ul,
+  ol {
+    @apply my-0;
+  }
+
+  > * + * {
+    @apply mt-3;
+  }
+
+  ul,
+  ol {
+    @apply ml-0 py-0 pl-1;
+  }
+
+  /* Markers inside, wrapped lines go back under the marker (as in the design) */
+  li {
+    @apply m-0 list-inside [font-size:inherit];
+  }
+
+  ul > li {
+    @apply list-disc;
+  }
+
+  ol > li {
+    @apply list-decimal;
+  }
+
+  li + li {
+    @apply mt-2;
+  }
+
+  li ul,
+  li ol {
+    @apply mt-2 pl-6;
+  }
+
+  a {
+    @apply text-inherit underline [font-size:inherit] hover:opacity-80;
+  }
+}
+
+/* ================= Default: [red check] Title ... [chevron] ================= */
+
+/* Dark section design: white titles and chevrons, light grey-lavender text, red separators */
+.accordion--default {
+  --acc-title-color: #fff;
+  --acc-text-color: rgb(199, 193, 193);
+}
+
+.accordion__chevron {
+  @apply block h-auto w-3.5 flex-none transition-[rotate] duration-(--acc-duration) ease-[ease] motion-reduce:transition-none;
+}
+
+.is-open > .accordion__heading .accordion__chevron {
+  @apply rotate-180;
+}
+
+/* ================= FAQ: 1. Question ... [+ / −] ================= */
+
+/* Light section design: near-black titles, warm grey answers, light salmon separators */
+.accordion--faq {
+  --acc-title-color: #2f2828;
+  --acc-text-color: var(--color-main-color);
+  --acc-separator: #f6a49c;
+  --acc-indent: 0px;
+  /* Answers stop short of the +/− column */
+  --acc-text-end: calc(var(--acc-control-size) + var(--acc-gap));
+}
+
+.accordion__number {
+  @apply whitespace-nowrap;
+}
+
+/* Outlined red box with a plus; filled red with a white minus when open. Bars are drawn with
+   pseudo elements so the vertical one can rotate flat into the minus. */
+.accordion__plus-minus {
+  @apply relative block size-(--acc-control-size) flex-none border border-(color:--acc-accent) bg-transparent text-(--acc-accent) transition-colors duration-(--acc-duration) motion-reduce:transition-none;
+
+  &::before,
+  &::after {
+    content: '';
+    @apply absolute top-1/2 left-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 bg-current;
+  }
+
+  &::after {
+    @apply rotate-90 transition-[rotate] duration-(--acc-duration) motion-reduce:transition-none;
+  }
+}
+
+.is-open > .accordion__heading .accordion__plus-minus {
+  @apply bg-(--acc-accent) text-white;
+
+  &::after {
+    @apply rotate-0;
+  }
+}

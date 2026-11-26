@@ -8,8 +8,6 @@ export const Default: FC<LinkProps> = ({ params, fields, page }) => {
   const hrefField = getFieldValue(fields?.Href);
   const isEditing = page?.mode?.isEditing;
 
-  console.log('---', hrefField, fields);
-
   return (
     <div className={`component link btn-primary ${styles || ''}`.trim()} id={id}>
       <div className="component-content">

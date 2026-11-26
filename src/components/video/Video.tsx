@@ -51,9 +51,7 @@ export const Default: FC<VideoProps> = ({ fields, params, page }) => {
               </div>
             </div>
             <span className="is-empty-hint video__hint">
-              {video
-                ? `Video: ${video.name ?? 'video file selected'} (plays on the published page)`
-                : 'Video: select an MP4 in the Video File field of the datasource'}
+              {video ? `Video: ${video.name ?? 'video file selected'}` : 'Video: select an MP4 in the Video File field of the datasource'}
             </span>
           </>
         ) : (

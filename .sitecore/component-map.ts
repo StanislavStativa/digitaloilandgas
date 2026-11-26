@@ -39,6 +39,9 @@ import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
 import * as CompanyStatistics from 'src/components/company-statistics/CompanyStatistics';
 import * as ColumnSplitter from 'src/components/column-splitter/ColumnSplitter';
+import * as AccordionList from 'src/components/accordion/AccordionList';
+import * as AccordionItem from 'src/components/accordion/AccordionItem';
+import * as Accordion from 'src/components/accordion/Accordion';
 
 export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['BYOCWrapper', BYOCServerWrapper],
@@ -77,6 +80,9 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['CountUp', { ...CountUp, componentType: 'client' }],
   ['CompanyStatistics', { ...CompanyStatistics }],
   ['ColumnSplitter', { ...ColumnSplitter }],
+  ['AccordionList', { ...AccordionList, componentType: 'client' }],
+  ['AccordionItem', { ...AccordionItem }],
+  ['Accordion', { ...Accordion }],
 ]);
 
 export default componentMap;

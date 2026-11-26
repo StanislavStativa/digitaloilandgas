@@ -388,3 +388,205 @@
 .order-xl-last {
   @apply xl:order-last;
 }
+
+/* display: Bootstrap 5 d-{bp}-{value} from the SXA grid (Grid Parameters visibility), e.g. "d-none d-xl-block".
+   !important like Bootstrap, so they beat component display rules. Same order as Bootstrap:
+   breakpoints ascending (a larger breakpoint wins), "none" last within a breakpoint. */
+.d-inline {
+  @apply inline!;
+}
+.d-inline-block {
+  @apply inline-block!;
+}
+.d-block {
+  @apply block!;
+}
+.d-grid {
+  @apply grid!;
+}
+.d-inline-grid {
+  @apply inline-grid!;
+}
+.d-table {
+  @apply table!;
+}
+.d-table-row {
+  @apply table-row!;
+}
+.d-table-cell {
+  @apply table-cell!;
+}
+.d-flex {
+  @apply flex!;
+}
+.d-inline-flex {
+  @apply inline-flex!;
+}
+.d-none {
+  @apply hidden!;
+}
+.d-sm-inline {
+  @apply sm:inline!;
+}
+.d-sm-inline-block {
+  @apply sm:inline-block!;
+}
+.d-sm-block {
+  @apply sm:block!;
+}
+.d-sm-grid {
+  @apply sm:grid!;
+}
+.d-sm-inline-grid {
+  @apply sm:inline-grid!;
+}
+.d-sm-table {
+  @apply sm:table!;
+}
+.d-sm-table-row {
+  @apply sm:table-row!;
+}
+.d-sm-table-cell {
+  @apply sm:table-cell!;
+}
+.d-sm-flex {
+  @apply sm:flex!;
+}
+.d-sm-inline-flex {
+  @apply sm:inline-flex!;
+}
+.d-sm-none {
+  @apply sm:hidden!;
+}
+.d-md-inline {
+  @apply md:inline!;
+}
+.d-md-inline-block {
+  @apply md:inline-block!;
+}
+.d-md-block {
+  @apply md:block!;
+}
+.d-md-grid {
+  @apply md:grid!;
+}
+.d-md-inline-grid {
+  @apply md:inline-grid!;
+}
+.d-md-table {
+  @apply md:table!;
+}
+.d-md-table-row {
+  @apply md:table-row!;
+}
+.d-md-table-cell {
+  @apply md:table-cell!;
+}
+.d-md-flex {
+  @apply md:flex!;
+}
+.d-md-inline-flex {
+  @apply md:inline-flex!;
+}
+.d-md-none {
+  @apply md:hidden!;
+}
+.d-lg-inline {
+  @apply lg:inline!;
+}
+.d-lg-inline-block {
+  @apply lg:inline-block!;
+}
+.d-lg-block {
+  @apply lg:block!;
+}
+.d-lg-grid {
+  @apply lg:grid!;
+}
+.d-lg-inline-grid {
+  @apply lg:inline-grid!;
+}
+.d-lg-table {
+  @apply lg:table!;
+}
+.d-lg-table-row {
+  @apply lg:table-row!;
+}
+.d-lg-table-cell {
+  @apply lg:table-cell!;
+}
+.d-lg-flex {
+  @apply lg:flex!;
+}
+.d-lg-inline-flex {
+  @apply lg:inline-flex!;
+}
+.d-lg-none {
+  @apply lg:hidden!;
+}
+.d-xl-inline {
+  @apply xl:inline!;
+}
+.d-xl-inline-block {
+  @apply xl:inline-block!;
+}
+.d-xl-block {
+  @apply xl:block!;
+}
+.d-xl-grid {
+  @apply xl:grid!;
+}
+.d-xl-inline-grid {
+  @apply xl:inline-grid!;
+}
+.d-xl-table {
+  @apply xl:table!;
+}
+.d-xl-table-row {
+  @apply xl:table-row!;
+}
+.d-xl-table-cell {
+  @apply xl:table-cell!;
+}
+.d-xl-flex {
+  @apply xl:flex!;
+}
+.d-xl-inline-flex {
+  @apply xl:inline-flex!;
+}
+.d-xl-none {
+  @apply xl:hidden!;
+}
+.d-xxl-inline {
+  @apply 2xl:inline!;
+}
+.d-xxl-inline-block {
+  @apply 2xl:inline-block!;
+}
+.d-xxl-block {
+  @apply 2xl:block!;
+}
+.d-xxl-grid {
+  @apply 2xl:grid!;
+}
+.d-xxl-inline-grid {
+  @apply 2xl:inline-grid!;
+}
+.d-xxl-table {
+  @apply 2xl:table!;
+}
+.d-xxl-table-row {
+  @apply 2xl:table-row!;
+}
+.d-xxl-table-cell {
+  @apply 2xl:table-cell!;
+}
+.d-xxl-flex {
+  @apply 2xl:flex!;
+}
+.d-xxl-inline-flex {
+  @apply 2xl:inline-flex!;
+}
+.d-xxl-none {
+  @apply 2xl:hidden!;
+}

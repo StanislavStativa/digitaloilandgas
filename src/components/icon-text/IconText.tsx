@@ -1,8 +1,9 @@
 import { getFieldValue } from 'lib/component-props';
+import { hasFieldText, hasImageSrc } from 'lib/field-utils';
 import { cn } from 'lib/utils';
 import { FC } from 'react';
 import { IconTextProps, IconTextVariant } from './IconText.props';
-import { hasIconTextImage, hasIconTextValue, IconTextItem } from './IconTextItem';
+import { IconTextItem } from './IconTextItem';
 
 const IconTextRendering: FC<IconTextProps & { variant: IconTextVariant }> = ({ fields, params, page, variant }) => {
   const { styles, RenderingIdentifier: id } = params;
@@ -13,7 +14,7 @@ const IconTextRendering: FC<IconTextProps & { variant: IconTextVariant }> = ({ f
   const description = getFieldValue(fields?.Description);
 
   // Live site: nothing worth showing without a title or an icon
-  if (!isEditing && !hasIconTextValue(title) && !hasIconTextImage(icon)) return null;
+  if (!isEditing && !hasFieldText(title) && !hasImageSrc(icon)) return null;
 
   return (
     <div id={typeof id === 'string' ? id : undefined} className={cn('component icon-text-component', `icon-text-component--${variant}`, styles)}>

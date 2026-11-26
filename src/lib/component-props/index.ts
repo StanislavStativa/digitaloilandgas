@@ -1,12 +1,4 @@
-import {
-  ComponentParams,
-  ComponentRendering,
-  Field,
-  ImageField,
-  LinkField,
-  Page,
-  RichTextField,
-} from '@sitecore-content-sdk/nextjs';
+import { ComponentParams, ComponentRendering, Field, ImageField, LinkField, Page, RichTextField } from '@sitecore-content-sdk/nextjs';
 
 export type ComponentProps = {
   rendering: ComponentRendering;
@@ -49,19 +41,21 @@ export type CompatibleDatasource<T> =
     }
   | T;
 
-export const getDatasource = <T>(
-  fields: CompatibleDatasource<T> | null | undefined
-): T | undefined => {
+/**
+ * The rendering's datasource, whichever shape the fields arrive in:
+ * - Integrated GraphQL `{ data: { datasource, contextItem } }`: the datasource, else the context item,
+ *   else undefined (no datasource selected comes back as `{ data: { datasource: null } }`);
+ * - plain fields (default resolver): the fields object itself.
+ */
+export const getDatasource = <T>(fields: CompatibleDatasource<T> | null | undefined): T | undefined => {
   if (!fields) return undefined;
 
-  const graphFields = fields as {
-    data?: {
-      datasource?: T;
-      contextItem?: T;
-    };
-  };
+  if (typeof fields === 'object' && 'data' in fields) {
+    const { data } = fields as { data?: { datasource?: T | null; contextItem?: T | null } | null };
+    return data?.datasource ?? data?.contextItem ?? undefined;
+  }
 
-  return graphFields?.data?.datasource ?? graphFields?.data?.contextItem ?? (fields as T);
+  return fields as T;
 };
 
 export const getFieldValue = <T>(field: CompatibleField<T> | null | undefined): T | undefined => {

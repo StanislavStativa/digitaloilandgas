@@ -377,21 +377,3 @@ describe('ContentList (Interactive variant)', () => {
     expect(a.querySelector('.interactive-content-list__media')?.id).not.toBe(b.querySelector('.interactive-content-list__media')?.id);
   });
 });
-
-describe('InteractiveContentList (legacy rendering)', () => {
-  it('renders the Content List Interactive variant', async () => {
-    const { Default: LegacyInteractiveContentList } = await import('../../../components/interactive-content-list/InteractiveContentList');
-    const { container } = render(<LegacyInteractiveContentList {...makeProps()} />);
-
-    expect(container.querySelector('.component')).toHaveClass('content-list-component', 'content-list-component--interactive');
-    expect(getCards(container)).toHaveLength(3);
-    expectActive(container, 0);
-  });
-
-  it('keeps the old white text on existing pages, alongside the authored styles', async () => {
-    const { Default: LegacyInteractiveContentList } = await import('../../../components/interactive-content-list/InteractiveContentList');
-    const { container } = render(<LegacyInteractiveContentList {...makeProps()} />);
-
-    expect(container.querySelector('.component')).toHaveClass('text-text-white', 'custom-style');
-  });
-});

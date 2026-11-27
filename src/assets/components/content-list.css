@@ -309,6 +309,117 @@
   }
 }
 
+/* ================= Image List variant: one card per row ================= */
+
+/* Mobile first: image on top, text below. The cards only style themselves; the section
+   background belongs to the parent container. */
+.image-content-list {
+  --img-cl-border: #ffffff;
+  --img-cl-title-color: var(--color-text-heading);
+  --img-cl-text-color: var(--color-main-color);
+  --img-cl-radius: 0.5rem;
+  --img-cl-gap: 1.25rem;
+  --img-cl-padding: 1rem 1rem 1.25rem;
+  --img-cl-image-height: 9rem;
+  --img-cl-title-size: 1.125rem;
+  --img-cl-text-size: 1rem;
+  --img-cl-text-gap: 0.5rem;
+  /* Horizontal layout: card height when the text is short (the image fills it) */
+  --img-cl-min-height: 18rem;
+
+  @apply grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-(--img-cl-gap);
+}
+
+/* "text-text-white" rendering style: same palette switch as the other variants */
+.content-list-component.text-text-white .image-content-list {
+  --img-cl-title-color: var(--color-text-white);
+  --img-cl-text-color: rgb(255 255 255 / 0.8);
+}
+
+.image-content-list__card {
+  @apply box-border grid min-w-0 grid-cols-[minmax(0,1fr)] content-start;
+  @apply rounded-(--img-cl-radius) border border-solid border-(color:--img-cl-border) bg-transparent wrap-break-word;
+}
+
+/* next/image `fill` is absolutely positioned inside this box; object-fit crops without distortion.
+   The inner radius follows the card's outer radius minus its 1px border. */
+.image-content-list__media {
+  @apply relative h-(--img-cl-image-height) min-w-0 overflow-hidden rounded-t-[calc(var(--img-cl-radius)-1px)];
+
+  img {
+    @apply block h-full w-full max-w-none object-cover object-center;
+  }
+
+  .is-empty-hint {
+    @apply absolute inset-x-0 bottom-1/2 translate-y-1/2 px-4 text-center text-(--img-cl-text-color) italic;
+  }
+}
+
+.image-content-list__body {
+  @apply min-w-0 p-(--img-cl-padding);
+}
+
+/* Two classes: beats the global heading colour rule and the h4 sizes from app.css */
+.image-content-list .image-content-list__title {
+  @apply m-0 font-poppins text-(length:--img-cl-title-size) leading-[1.35] font-semibold text-(--img-cl-title-color);
+}
+
+.image-content-list__description {
+  @apply mt-(--img-cl-text-gap) font-lato text-(length:--img-cl-text-size) leading-[1.6] text-(--img-cl-text-color);
+
+  &:first-child {
+    @apply mt-0;
+  }
+
+  p:first-child {
+    @apply mt-0;
+  }
+
+  p:last-child {
+    @apply mb-0;
+  }
+}
+
+/* Horizontal: 768px viewport and at least 576px for the component (a narrow column splitter
+   cell keeps the stacked card). Image ≈ one third of the card, as tall as the card. */
+@media (width >= 48rem) {
+  @container content-list (width >= 36rem) {
+    .image-content-list {
+      --img-cl-padding: 1.5rem;
+      --img-cl-title-size: 1.25rem;
+      --img-cl-text-size: 1.0625rem;
+      --img-cl-text-gap: 0.75rem;
+    }
+
+    .image-content-list__card {
+      @apply min-h-(--img-cl-min-height) grid-cols-[minmax(0,1fr)_minmax(0,2fr)] content-stretch;
+    }
+
+    /* Stretches to the card height; the text column sets the height for long content */
+    .image-content-list__media {
+      /* Physical corners only: a logical `rounded-s` would lose top-left to the mobile `rounded-t` reset */
+      @apply h-auto rounded-tr-none rounded-l-[calc(var(--img-cl-radius)-1px)];
+    }
+
+    /* Image missing on the live site: the text takes the whole card, no empty image area */
+    .image-content-list__card--no-image {
+      @apply min-h-0 grid-cols-[minmax(0,1fr)];
+    }
+  }
+}
+
+/* Desktop: 1024px viewport and at least 768px for the component */
+@media (width >= 64rem) {
+  @container content-list (width >= 48rem) {
+    .image-content-list {
+      --img-cl-gap: 2.5rem;
+      --img-cl-title-size: 1.5rem;
+      --img-cl-text-size: 1.0625rem;
+      --img-cl-text-gap: 1rem;
+    }
+  }
+}
+
 /* Empty datasource hint in Pages */
 .content-list-component > .component-content > .is-empty-hint {
   @apply block p-4 text-center text-text-basic italic;

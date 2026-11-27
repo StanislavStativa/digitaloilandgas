@@ -6,6 +6,7 @@ import { Image as ContentSdkImage, RichText, Text } from '@sitecore-content-sdk/
 import { FC, ReactNode } from 'react';
 import { ContentListItem, ContentListProps, InteractiveContentEntry } from './ContentList.props';
 import { InteractiveContentSwitcher } from './InteractiveContentSwitcher';
+import { ImageListItem } from './ImageListItem';
 
 /** React key: falls back to the position if the ComponentQuery doesn't select `id` */
 const itemKey = (item: ContentListItem, i: number) => item.id || `item-${i}`;
@@ -96,6 +97,19 @@ export const Default: FC<ContentListProps> = (props) => (
             )}
             {renderBody(item, isEditing, 'content-list')}
           </div>
+        ))}
+      </div>
+    )}
+  </ContentListShell>
+);
+
+/** Image List variant: one card per row, image left (desktop/tablet) or on top (narrow); same datasource */
+export const ImageList: FC<ContentListProps> = (props) => (
+  <ContentListShell props={props} variantClass="content-list-component--image-list">
+    {(items, isEditing) => (
+      <div className="image-content-list" role="list">
+        {items.map((item, i) => (
+          <ImageListItem key={itemKey(item, i)} item={item} index={i} isEditing={isEditing} />
         ))}
       </div>
     )}

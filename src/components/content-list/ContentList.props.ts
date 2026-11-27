@@ -21,7 +21,7 @@ export interface ContentListItem {
  * Shape returned by the rendering's ComponentQuery
  * (/sitecore/layout/Renderings/.../digitaloilandgas/Content List).
  * The "Content List" datasource has no own fields; its children are the cards, in item order.
- * Both variants (Default grid, Interactive switcher) use the same datasource.
+ * Every variant (Default grid, Interactive switcher, Image List) uses the same datasource.
  */
 export interface ContentListDatasource {
   items?: { results?: ContentListItem[] };

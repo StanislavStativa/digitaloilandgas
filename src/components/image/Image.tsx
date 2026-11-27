@@ -4,8 +4,8 @@ import { CompatibleLink } from 'components/content-sdk/CompatibleLink';
 import { getFieldValue } from 'lib/component-props';
 import { ImageProps, ImageWrapperProps } from './image.props';
 
-const ImageWrapper: React.FC<ImageWrapperProps> = ({ className, id, children }) => (
-  <figure className={className.trim()} id={id}>
+const ImageWrapper: React.FC<ImageWrapperProps> = ({ className, id, style, children }) => (
+  <figure className={className.trim()} id={id} style={style}>
     <div className="component-content">{children}</div>
   </figure>
 );
@@ -64,8 +64,18 @@ export const Default: React.FC<ImageProps> = (props) => {
   );
   const shouldWrapWithLink = !page?.mode?.isEditing && targetUrlField?.value?.href;
 
+  // Expose the authored image height to CSS: the "object-cover" style keeps the
+  // image at this height while it stretches to the full column width.
+  const imageHeight = Number(imageField?.value?.height);
+  const wrapperStyle =
+    imageHeight > 0 ? ({ '--image-height': `${imageHeight}px` } as React.CSSProperties) : undefined;
+
   return (
-    <ImageWrapper className={`component image ${styles}`} id={typeof id === 'string' ? id : undefined}>
+    <ImageWrapper
+      className={`component image ${styles}`}
+      id={typeof id === 'string' ? id : undefined}
+      style={wrapperStyle}
+    >
       {shouldWrapWithLink ? <CompatibleLink field={targetUrlField}>{image}</CompatibleLink> : image}
       <figcaption className="image-caption field-imagecaption">
         <Text tag="span" field={imageCaptionField} />

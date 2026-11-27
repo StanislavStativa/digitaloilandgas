@@ -15,5 +15,6 @@ export interface ImageProps extends ComponentProps {
 export interface ImageWrapperProps {
   className: string;
   id?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 }

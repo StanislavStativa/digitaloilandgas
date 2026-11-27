@@ -20,10 +20,17 @@
   img {
     border-radius: inherit;
   }
+
+  /* Full column width at the authored height (--image-height is set from the
+     Image field in Image.tsx); the image is cropped to fit instead of growing taller. */
+  &.object-cover {
+    img {
+      @apply object-cover h-[var(--image-height,auto)];
+    }
+  }
 }
 
 /* components image */
-
 .image-default-size {
   img {
     @apply max-w-none w-auto!;

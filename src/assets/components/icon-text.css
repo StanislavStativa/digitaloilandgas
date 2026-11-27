@@ -123,7 +123,25 @@
 
 /* Columns: SXA style folder "Icon Text List columns" puts the class on the rendering wrapper.
    "1 column" (icon-text-list-cols-1) is the default layout and needs no rule.
-   "2 columns": two equal columns above 768px, one column at 768px and below. */
+   "2 columns": two equal columns above 768px, one column at 768px and below.
+   "3 columns": three equal columns above 1024px, one column at 1024px and below
+   (three columns are too narrow on tablets) with a 20px gap between the stacked items. */
 .icon-text-list-cols-2 .icon-text-list {
   @apply min-[769px]:grid-cols-2 min-[769px]:gap-x-8;
+}
+
+.icon-text-list-cols-3 .icon-text-list {
+  @apply max-[1024px]:gap-y-5 min-[1025px]:grid-cols-3 min-[1025px]:gap-x-8;
+}
+
+/* Style "Large Title" (Feature variant): larger regular-weight title in the main grey,
+   e.g. a row of benefits in 3 columns. 18px up to 1024px (mobile and tablet), 24px above. */
+.icon-text-large-title .icon-text--feature {
+  .icon-text__title {
+    @apply text-lg leading-[1.25] font-normal min-[1025px]:text-2xl;
+  }
+
+  &:not(.text-text-white *) .icon-text__title {
+    @apply text-main-color;
+  }
 }

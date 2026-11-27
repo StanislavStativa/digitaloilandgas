@@ -1,0 +1,153 @@
+/* component content-cards-grid (Content Cards Grid rendering + its ContentCard) */
+
+/* The wrapper and the grid are transparent on purpose: the section background (light or dark blue)
+   belongs to the parent container and must show through the gaps. Only .content-card has a background.
+
+   Layout, all native CSS grid (no JavaScript, no row items):
+   - mobile:  one column, every card full width;
+   - tablet:  two equal columns, the card Width is ignored;
+   - desktop: six columns; Width 1/3 spans 2, Width 1/2 spans 3. Cards are placed in item order and wrap
+     when the next one doesn't fit (no `dense`, so nothing is reordered to fill a gap).
+   Rows are `auto` sized and cards stretch (default align-items), so every card in a row gets the row's
+   height: the largest min-height or content of its cards. Each row sizes on its own (no grid-auto-rows: 1fr).
+
+   Tablet and desktop need both the viewport range from the design AND enough width in the component
+   itself (container query), so a narrow column splitter falls back to fewer columns on a wide screen.
+   Everything reacts to resizing without a reload. */
+.content-cards-grid-component {
+  @apply @container/content-cards-grid w-full min-w-0;
+}
+
+.content-cards-grid {
+  /* Card minimum heights per Height option (mobile; raised for tablet and desktop below).
+     rem, so they grow with the text when the user zooms the text size. */
+  --content-cards-min-h-compact: 9rem;
+  --content-cards-min-h-medium: 11rem;
+  --content-cards-min-h-tall: 13rem;
+
+  @apply m-0 grid list-none grid-cols-[minmax(0,1fr)] gap-6 p-0;
+}
+
+/* ================= Card ================= */
+
+.content-card {
+  --content-card-accent: #ff2a1f;
+  --content-card-ink: var(--color-text-heading);
+
+  @apply m-0 min-w-0 rounded-md bg-white p-6 wrap-break-word shadow-[0_2px_8px_rgb(0_0_0/0.1)];
+}
+
+/* min-height only: a card never clips its content and grows past the minimum when it has to */
+.content-card--height-compact {
+  @apply min-h-(--content-cards-min-h-compact);
+}
+
+.content-card--height-medium {
+  @apply min-h-(--content-cards-min-h-medium);
+}
+
+.content-card--height-tall {
+  @apply min-h-(--content-cards-min-h-tall);
+}
+
+/* Very narrow components (320px phones, a one-third column splitter) */
+@container content-cards-grid (width < 20rem) {
+  .content-card {
+    @apply p-5;
+  }
+}
+
+/* Two classes: beats the unlayered `:is(h1…h6):not(.text-text-white …)` colour rule and the
+   global h3 sizes from app.css. The accent line is the border, so it spans the whole title block
+   however many lines it wraps to. */
+.content-card .content-card__title {
+  @apply m-0 border-l-4 border-solid border-l-(color:--content-card-accent) ps-4 font-poppins text-xl leading-[1.2] font-semibold text-(--content-card-ink) min-h-[58px];
+}
+
+.content-card .content-card__description {
+  @apply font-lato text-base leading-normal text-main-color;
+
+  &:not(:first-child) {
+    @apply mt-5;
+  }
+
+  > :first-child {
+    @apply mt-0;
+  }
+
+  > :last-child {
+    @apply mb-0;
+  }
+
+  p {
+    @apply my-0;
+  }
+
+  p + p,
+  ul,
+  ol {
+    @apply mt-3 mb-0;
+  }
+
+  /* base/app.css hides list markers globally; restore them for authored content */
+  ul,
+  ol {
+    @apply ps-5;
+  }
+
+  ul > li {
+    @apply list-disc;
+  }
+
+  ol > li {
+    @apply list-decimal;
+  }
+
+  a {
+    @apply text-(--content-card-ink) underline underline-offset-2 hover:text-(--content-card-accent) focus-visible:rounded-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--content-card-accent);
+  }
+}
+
+/* ================= Responsive (after the card rules, so they win at equal specificity) ================= */
+
+/* Tablet: 640px viewport and at least 480px for the component */
+@media (width >= 40rem) {
+  @container content-cards-grid (width >= 30rem) {
+    .content-cards-grid {
+      --content-cards-min-h-compact: 12rem;
+      --content-cards-min-h-medium: 15rem;
+      --content-cards-min-h-tall: 18rem;
+
+      @apply grid-cols-2;
+    }
+  }
+}
+
+/* Desktop: 1024px viewport and at least 768px for the component */
+@media (width >= 64rem) {
+  @container content-cards-grid (width >= 48rem) {
+    .content-cards-grid {
+      --content-cards-min-h-compact: 15rem;
+      --content-cards-min-h-medium: 18rem;
+      --content-cards-min-h-tall: 22rem;
+
+      @apply grid-cols-6;
+    }
+
+    .content-card--width-third {
+      @apply col-span-2;
+    }
+
+    .content-card--width-half {
+      @apply col-span-3;
+    }
+
+    .content-card .content-card__title {
+      @apply text-2xl leading-[1.2];
+    }
+
+    .content-card .content-card__description {
+      @apply text-[1.0625rem] leading-[1.6];
+    }
+  }
+}

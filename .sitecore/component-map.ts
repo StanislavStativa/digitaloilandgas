@@ -34,6 +34,8 @@ import * as FooterNavigation from 'src/components/footer/FooterNavigation';
 import * as Footer from 'src/components/footer/Footer';
 import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
 import * as ContentList from 'src/components/content-list/ContentList';
+import * as ContentCardsGrid from 'src/components/content-cards-grid/ContentCardsGrid';
+import * as ContentCard from 'src/components/content-cards-grid/ContentCard';
 import * as ContentBlock from 'src/components/content-block/ContentBlock';
 import * as Container from 'src/components/container/Container';
 import * as CountUp from 'src/components/company-statistics/CountUp';
@@ -75,6 +77,8 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['Footer', { ...Footer }],
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher, componentType: 'client' }],
   ['ContentList', { ...ContentList }],
+  ['ContentCardsGrid', { ...ContentCardsGrid }],
+  ['ContentCard', { ...ContentCard }],
   ['ContentBlock', { ...ContentBlock, componentType: 'client' }],
   ['Container', { ...Container }],
   ['CountUp', { ...CountUp, componentType: 'client' }],

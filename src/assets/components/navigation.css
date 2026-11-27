@@ -107,7 +107,6 @@
     }
 
     .rel-level2.current > .navigation-title > a {
-      @apply text-(color:--nav-red);
     }
   }
 }

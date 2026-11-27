@@ -13,4 +13,38 @@
       @apply -mx-[5px];
     }
   }
+
+  /* Reusable column gaps (set via Sitecore Styles field), work at any breakpoint.
+     One-sided gutter: the row overflows only to the start side,
+     so stacked columns stay flush and no horizontal scroll appears. */
+  &.gutter-sm {
+    @apply [--cs-gutter:24px];
+  }
+
+  &.gutter-md {
+    @apply [--cs-gutter:40px];
+  }
+
+  &.gutter-lg {
+    @apply [--cs-gutter:56px];
+  }
+
+  &.gutter-sm,
+  &.gutter-md,
+  &.gutter-lg {
+    /* --cs-inset: how far the nested .row in each column pulls components outward
+       (-5px below md, see the rule above; -12px grid default from md). The splitter is
+       inset by the same amount on both sides, so text inside lines up with text outside
+       it, and the nested row never sticks out past the container (no horizontal scroll). */
+    @apply [--cs-inset:5px] md:[--cs-inset:calc(var(--bs-gutter-x)/2)];
+
+    /* Start margin pulls the first column's gutter outside the block; the grid sets
+       `.row > * { width: 100% }`, so the width is set explicitly to match. */
+    @apply ms-[calc(var(--cs-inset)-var(--cs-gutter))] me-(--cs-inset) px-0;
+    @apply w-[calc(100%+var(--cs-gutter)-2*var(--cs-inset))];
+
+    > div {
+      @apply ps-(--cs-gutter) pe-0;
+    }
+  }
 }

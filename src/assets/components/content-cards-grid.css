@@ -61,7 +61,7 @@
    global h3 sizes from app.css. The accent line is the border, so it spans the whole title block
    however many lines it wraps to. */
 .content-card .content-card__title {
-  @apply m-0 border-l-4 border-solid border-l-(color:--content-card-accent) ps-4 font-poppins text-xl leading-[1.2] font-semibold text-(--content-card-ink);
+  @apply m-0 border-l-4 border-solid border-l-(color:--content-card-accent) ps-4 font-poppins text-xl leading-[1.2] font-semibold text-(--content-card-ink) min-h-[58px];
 }
 
 .content-card .content-card__description {

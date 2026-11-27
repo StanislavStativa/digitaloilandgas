@@ -112,13 +112,7 @@
 }
 
 .icon-text-list--feature {
-  @apply gap-8;
-}
-
-@container icon-text (min-width: 32rem) {
-  .icon-text-list--feature {
-    @apply gap-10;
-  }
+  @apply gap-5;
 }
 
 /* Columns: SXA style folder "Icon Text List columns" puts the class on the rendering wrapper.

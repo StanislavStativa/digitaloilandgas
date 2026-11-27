@@ -33,6 +33,7 @@ import * as IconText from 'src/components/icon-text/IconText';
 import * as FooterNavigation from 'src/components/footer/FooterNavigation';
 import * as Footer from 'src/components/footer/Footer';
 import * as InteractiveContentSwitcher from 'src/components/content-list/InteractiveContentSwitcher';
+import * as ImageListItem from 'src/components/content-list/ImageListItem';
 import * as ContentList from 'src/components/content-list/ContentList';
 import * as ContentCardsGrid from 'src/components/content-cards-grid/ContentCardsGrid';
 import * as ContentCard from 'src/components/content-cards-grid/ContentCard';
@@ -76,6 +77,7 @@ export const componentMap = new Map<string, NextjsContentSdkComponent>([
   ['FooterNavigation', { ...FooterNavigation, componentType: 'client' }],
   ['Footer', { ...Footer }],
   ['InteractiveContentSwitcher', { ...InteractiveContentSwitcher, componentType: 'client' }],
+  ['ImageListItem', { ...ImageListItem }],
   ['ContentList', { ...ContentList }],
   ['ContentCardsGrid', { ...ContentCardsGrid }],
   ['ContentCard', { ...ContentCard }],
